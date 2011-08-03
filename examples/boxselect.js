@@ -99,6 +99,7 @@ Ext.onReady(function() {
 		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
 	];
 
+	// Example of email address field with forceSelection: false
 	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
 		fieldLabel: 'Enter multiple email addresses',
 		renderTo: 'emailSuggest',
@@ -107,9 +108,13 @@ Ext.onReady(function() {
 		store: emails,
 		queryMode: 'local',
 		forceSelection: false,
-		createNewOnEnter: true
+		createNewOnEnter: true,
+		createNewOnBlur: true
 	});
+	// End example of email address field with forceSelection: false
 
+
+	// Example of multiSelect: false
     var singleSelect = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select a state',
         renderTo: 'singleSelect',
@@ -122,7 +127,10 @@ Ext.onReady(function() {
 		value: 'CA',
 		valueField: 'abbr'
     });
+	// End example of multiSelect: false
 
+
+	// Example of stacked and pinList
     var stackedView = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select multiple states',
         renderTo: 'stackedSelect',
@@ -136,7 +144,96 @@ Ext.onReady(function() {
 		stacked: true,
 		pinList: false
     });
+	// End example of stacked and pinList
 
-	
+
+	// Example of value setting, retrieving and value events
+	var valuesSelect;
+	var valuesExample = Ext.create('Ext.panel.Panel', {
+		width: 500,
+		bodyPadding: 5,
+		renderTo: 'valueSetting',
+		layout: {
+			type: 'anchor'
+		},
+		defaults: {
+			anchor: '100%',
+			border: false
+		},
+		items: [{
+			xtype: 'component',
+			itemId: 'eventMessages',
+			autoEl: {
+				tag: 'div',
+				html: 'Messages:'
+			}
+		}],
+		tbar: {
+			enableOverflow: true,
+			items: [{
+                text: 'Disable',
+                enableToggle: true,
+                toggleHandler: function(field, state) {
+                    valuesSelect.setDisabled(state);
+                }
+            },{
+				text: 'addValue()',
+				handler: function() {
+					emailSuggest.addValue('test@bobbers.com');
+				}
+			},{
+				text: 'getValue()',
+				handler: function() {
+					window.alert(valuesSelect.getValue());
+				}
+			},{
+				text: 'getValueRecords().length',
+				handler: function() {
+					window.alert('# of records: ' + valuesSelect.getValueRecords().length);
+				}
+			},{
+				text: 'setValue("NY, NJ")',
+				handler: function() {
+					valuesSelect.setValue("NY, NJ");
+				}
+			},{
+				text: 'addValue("CA")',
+				handler: function() {
+					valuesSelect.addValue("CA");
+				}
+			},{
+				text: 'removeValue("NJ")',
+				handler: function() {
+					valuesSelect.removeValue("NJ");
+				}
+			}]
+		}
+	});
+	var messagesBlock = valuesExample.down('#eventMessages');
+	var addMessage = function(msg) {
+		messagesBlock.update(messagesBlock.el.dom.innerHTML + '<br />' + msg);
+	};
+	valuesSelect = valuesExample.insert(0, {
+		xtype: 'boxselect',
+		itemId: 'valuesSelect',
+		fieldLabel: 'Select multiple states',
+		displayField: 'name',
+		labelWidth: 130,
+		store: statesStore,
+		queryMode: 'local',
+		valueField: 'abbr',
+		value: 'WA, TX',
+		listeners: {
+			'change': function(field, newValue, oldValue) {
+				addMessage('[Change event] New value is "' + newValue + '" (Old was "' + oldValue + '")');
+				addMessage('[Select event] ' + field.getValueRecords().length + ' records selected.');
+			},
+			'select': function(field, records) {
+				addMessage('[Select event] ' + records.length + ' records selected.');
+			}
+		}
+	});
+	addMessage('[Init] Initialized with string "WA, TX"');
+	// End example of value setting, retrieving and value events
 
 });

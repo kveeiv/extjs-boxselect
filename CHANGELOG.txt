@@ -1,0 +1,56 @@
+CURRENT RELEASE
+---------------
+v1.1 - 27 Jul 2011
+Enhancements:
+* Added createOnBlur option to create new records when forceSelection is false
+* Added addValue and removeValue functions to allow for discrete programmatic management of values
+Bug Fixes:
+* Modified some ordering of value tracking to ensure the current values were available for select/change events
+* Modified render processing for multiselect items to better manage the input dom element
+* Updated field templates to be forward compatible with 4.0.5 (4.0.2a still supported)
+* Added requirements statement for use by Ext.Loader
+Documentation:
+* Added example showing some usages of value changing and event listening
+* Minor documentation updates and refactoring
+
+
+
+Previous Updates
+----------------
+
+v1.0 - 20 Jul 2011 
+* Fixes to rendering of field validation
+* Integration of features from kleins boxselect implementation
+* Fixes to value management for remote stores
+* Changes to value setting to allow for delimiter split strings of values, arrays of values, arrays of records, 
+  and arrays of unknown values (for on-demand remote store loading when queryMode 'remote' and forceSelection true)
+* Added keyboard based navigation
+* Added support for forceSelection false for use-cases like entry of multiple email addresses with auto-suggest
+* Added configuration option for collapsing the open list when multiSelect is true
+* Added stacked rendering style option; added full examples page
+* Added to github with github pages hosting of examples page
+* Significant documentation updates and refactoring
+
+v0.5 - 16 Jun 2011
+* Added support for multiSelect false
+* Added typeAhead support (not possible with ComboBox's multiSelect)
+* Improved automatic field resizing
+* Ensured compatibility with 4.0.2a and with the Ext.ux.form.field.ClearButton plugin
+* Minor documentation updates and refactoring
+
+v0.4 - 8 Jun 2011
+* Styling updates for multi-selected item removal controls to match tab removal controls and improve rendering performance
+* Remote queryMode support
+* Addition of autosize event to indicate change in height similar to the textarea field
+* Fixes to value tracking to ensure the change event is properly fired
+* Minor documentation updates and reorganization of functions
+
+v0.3 - 1 Jun 2011
+* Change sizing of user input area to adjust dynamically with remaining width
+* Fix various issues with display of emptyText
+
+v0.2 - 27 May 2011
+* Change to use default value setting if store is unfiltered
+
+v0.1 - 25 May 2011
+* Initial release

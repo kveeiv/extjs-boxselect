@@ -7,7 +7,7 @@
     <!-- ExtJS -->
     <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.2a/resources/css/ext-all.css" />
     <script type="text/javascript" src="http://dev.sencha.com/deploy/ext-4.0.2a/bootstrap.js"></script>
-
+    
     <link rel="stylesheet" type="text/css" href="../src/BoxSelect.css" />
     <script type="text/javascript" src="../src/BoxSelect.js"></script>
 
@@ -112,7 +112,7 @@ included here showcase the differences between the default control and this exte
 	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-displayField">displayField</a> and 
 	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>. These new
 	records are <b>not</b> added to the combo's store automatically.</p>
-	<p>There are two methods of determining when a new entry will be created:</p>
+	<p>There are three methods of determining when a new entry will be created:</p>
 	<ul class="config-options">
 		<li>
 			When the user types the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
@@ -121,6 +121,12 @@ included here showcase the differences between the default control and this exte
 		<li>
 			<a href="#">createNewOnEnter</a> is defaulted to false.  If set to true, a new entry will be created when the user presses Enter.
 			This configuration option only applies if forceSelection is false.
+		</li>
+		<li>
+			<a href="#">createNewOnBlur</a> is defaulted to false.  If set to true, a new entry will be created when focus leaves the input
+			field.  This configuration option only applies if forceSelection is false, and is superceded by 
+			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-autoSelect">autoSelect</a> and 
+			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-selectOnTab">selectOnTab</a>.
 		</li>
 	</ul>
     <div id="emailSuggest"></div>
@@ -131,12 +137,26 @@ included here showcase the differences between the default control and this exte
 	<p>The following configuration options are specific to the BoxSelect.</p>
 	<ul class="config-options">
 		<li><a href="#">createNewOnEnter</a> - please see the above forceSelection: false example.</li>
+		<li><a href="#">createNewOnBlur</a> - please see the above forceSelection: false example.</li>
 		<li><a href="#">stacked</a> is defaulted to false.  If set to true, the labelled items will fill to the width of the list instead
 		of being only as wide as the displayed value</li>
 		<li><a href="#">pinList</a> is defaulted to true.  If set to false, the pick list will automatically collapse after a selection is made
 			when multiSelect is true. This mimics the default behavior when multiSelect is false.</li>
 	</ul>
 	<div id="stackedSelect"></div>
+</div>
+
+<div class="example">
+	<h2>Value setting and events</h2>
+	<p>The following shows examples of manually managing the values of the field and displays the value-based events. Except where noted, 
+	the mixedValue parameters can be specified in any of the forms listed in the Basic Configuration examples above. In general, getRawValue
+	and setRawValue should not be used, as of ExtJS 4 they are formally for the rendered field output only.</p>
+	<ul class="config-options">
+		<li><a href="#">addValue(mixedValue)</a></li>
+		<li><a href="#">removeValue(mixedValue)</a></li>
+		<li><a href="#">getValueRecords()</a></li>
+	</ul>
+	<div id="valueSetting"></div>
 </div>
 
 </body>
