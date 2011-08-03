@@ -22,13 +22,14 @@
  * possible without your help. Specific thanks to 
  * 
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.0
+ * @version 1.1
  * @requires BoxSelect.css
  * @xtype boxselect
  */
 Ext.define('Ext.ux.form.field.BoxSelect', {
     extend:'Ext.form.field.ComboBox',
     alias: ['widget.comboboxselect', 'widget.boxselect'],
+    requires: ['Ext.selection.Model', 'Ext.data.Store'],
 
 	/**
      * @cfg {Boolean} multiSelect
@@ -45,8 +46,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	forceSelection: true,
 
     /**
-     * @cfg {Boolean} selectOnFocus <tt>true</tt> to automatically select any existing field text when the field
-     * receives input focus (defaults to <tt>true</tt> for best multi-select usability during querying)
+     * @cfg {Boolean} selectOnFocus <code>true</code> to automatically select any existing field text when the field
+     * receives input focus (defaults to <code>true</code> for best multi-select usability during querying)
      */
 	selectOnFocus: true,
 
@@ -55,11 +56,23 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 * When forceSelection is false, new records can be created by the user. These records are not added to the
 	 * combo's store. By default, this creation is triggered by typing the configured 'delimiter'. With 
 	 * createNewOnEnter set to true, this creation can also be triggered by the 'enter' key. This configuration
-	 * option has no effect if forceSelection is true.
+	 * option has no effect if forceSelection is true. (defaults to <code>false</code>)
 	 * <code>true</code> to allow the user to press 'enter' to create a new record
 	 * <code>false</code> to only allow the user to type the configured 'delimiter' to create a new record
 	 */
 	createNewOnEnter: false,
+
+	/**
+	 * @cfg {Boolean} createNewOnBlur
+	 * Similar to {@link #createNewOnEnter}, createNewOnBlur will create a new record when the field loses focus.
+	 * This configuration option has no effect if forceSelection is true. Please note that this behavior is also
+	 * affected by the configuration options {@link #autoSelect} and {@link #selectOnTab}. If those are true
+	 * and an existing item would have been selected as a result, the partial text the user has entered will
+	 * be discarded.
+	 * <code>true</code> to create a new record when the field loses focus
+	 * <code>false</code> to not create a new record on blur
+	 */
+	createNewOnBlur: false,
 
 	/**
 	 * @cfg {Boolean} stacked
@@ -90,7 +103,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 						'class="x-boxselect-input-field" autocomplete="off" />',
 				'</li>',
 			'</ul>',
-			'<div class="{triggerWrapCls}" role="presentation">',
+			'<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
 				'{triggerEl}',
 				'<div class="{clearCls}" role="presentation"></div>',
 			'</div>',
@@ -144,7 +157,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     },
 
 	/**
-	 * Register events for multiSelect management controls
+	 * Register events for management controls of labelled items
 	 */
 	initEvents: function() {
 		var me = this;
@@ -159,7 +172,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Create a store for our selected records based on the main store's model
+	 * Create a store for the records of our current value based on the main store's model
 	 */
 	bindStore: function(store, initial) {
 		var me = this,
@@ -200,7 +213,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Clean up multiSelect management controls
+	 * Clean up labelled items management controls
 	 */
 	onDestroy: function() {
 		var me = this;
@@ -287,7 +300,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Used to determine if a record is filtered (for retaining as a multi-select value)
+	 * @private
+	 * Used to determine if a record is filtered (for retaining as a multiSelect value)
 	 */
 	isFilteredRecord: function(record) {
 		var me = this,
@@ -339,7 +353,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     },
 
 	/**
-	 * Overridden to preserve multiSelect selections when list is refiltered via overridden doRawQuery
+	 * Overridden to preserve current labelled items when list is filtered/paged/loaded
+	 * and does not include our current value.
 	 */
 	onListSelectionChange: function(list, selectedRecords) {
         var me = this,
@@ -437,6 +452,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     }, 
 
 	/**
+	 * @private
 	 * Get the current cursor position in the input field
 	 */
 	getCursorPosition: function() {
@@ -453,6 +469,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
+	 * @private
 	 * Check to see if the input field has selected text
 	 */
 	hasSelectedText: function() {
@@ -478,8 +495,13 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 			stopEvent = false,
 			rec, i;
 
-        if (!me.readOnly && !me.disabled && (valueStore.getCount() > 0) && 
-				((rawValue == '') || ((me.getCursorPosition() === 0) && !me.hasSelectedText()))) {
+        if (me.readOnly || me.disabled || !me.editable) {
+            return;
+        }
+
+		// Handle keyboard based navigation of selected labelled items
+        if ((valueStore.getCount() > 0) && 
+                ((rawValue == '') || ((me.getCursorPosition() === 0) && !me.hasSelectedText()))) {
 			if ((key == e.BACKSPACE) || (key == e.DELETE)) {
 				if (selModel.getCount() > 0) {
 					me.valueStore.remove(selModel.getSelection());
@@ -523,6 +545,11 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 			e.stopEvent();
 			return;
 		} 
+
+		// Prevent key up processing for enter if it is being handled by the picker
+		if (me.isExpanded && (key == e.ENTER) && me.picker.highlightedItem) {
+			me.preventKeyUpEvent = true;
+		}
 			
 		if (me.enableKeyEvents) {
 			me.callParent(arguments);
@@ -535,8 +562,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Handles auto-selection of multiSelect items based on this field's delimiter, and 
-	 * the keyUp processing of key-based selection of labelled items.
+	 * Handles auto-selection of labelled items based on this field's delimiter, as well
+	 * as the keyUp processing of key-based selection of labelled items.
 	 */
     onKeyUp: function(e, t) {
         var me = this,
@@ -545,7 +572,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
 		if (me.preventKeyUpEvent) {
 			e.stopEvent();
-			me.selectText(0, 0);
 			if ((me.preventKeyUpEvent === true) || (e.getKey() === me.preventKeyUpEvent)) {
 				delete me.preventKeyUpEvent;
 			}
@@ -610,12 +636,16 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     },
 
 	/**
-	 * Delegation control for selecting and removing labelled items items or triggering list collapse/expansion
+	 * Delegation control for selecting and removing labelled items or triggering list collapse/expansion
 	 */
 	onItemListClick: function(evt, el, o) {
 		var me = this,
 			itemEl = evt.getTarget('.x-boxselect-item'),
 			closeEl = itemEl ? evt.getTarget('.x-boxselect-item-close') : false;
+
+        if (me.readOnly || me.disabled) {
+            return;
+        }
 
 		if (itemEl) {
 			if (closeEl) {
@@ -630,7 +660,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Build the markup for the multi-selected items. Template must be built on demand due to combobox initComponent
+	 * Build the markup for the labelled items. Template must be built on demand due to ComboBox initComponent
 	 * lifecycle for the creation of on-demand stores (to account for automatic valueField/displayField setting)
 	 */
 	getMultiSelectItemMarkup: function() {
@@ -668,12 +698,15 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 * Update the labelled items rendering
 	 */
 	applyMultiselectItemMarkup: function() {
-		var me = this;
+		var me = this,
+			itemList = me.itemList,
+			item;
 
-		if (me.itemList) {
-			me.el.appendChild(me.inputElCt);
-			me.itemList.update(me.getMultiSelectItemMarkup());
-			me.itemList.appendChild(me.inputElCt);
+		if (itemList) {
+			while ((item = me.inputElCt.prev()) != null) {
+				item.remove();
+			}
+			me.inputElCt.insertHtml('beforeBegin', me.getMultiSelectItemMarkup());
 			me.autoSize();
 			me.alignPicker();
 		}
@@ -720,7 +753,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Removal of value by node reference
+	 * Removal of labelled item by node reference
 	 */
 	removeByListItemNode: function(itemEl) {
 		var me = this,
@@ -735,6 +768,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	/**
 	 * Intercept calls to getRawValue to pretend there is no inputEl for rawValue handling, 
 	 * so that we can use inputEl for just the user input.
+	 * 
+	 * **Note that in general, raw values are the rendered value for the input field,
+	 * and therefore should not be used for comboboxes or most programmatic logic.**
 	 */
 	getRawValue: function() {
 		var me = this,
@@ -747,8 +783,11 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Intercept calls to setRawValue to pretend there is no inputEl for rawValue handling, so that we can use inputEl 
-	 * for just the user input. Update the multiSelect items list display based on the new values.
+	 * Intercept calls to setRawValue to pretend there is no inputEl for rawValue handling, 
+	 * so that we can use inputEl for just the user input. 
+	 * 
+	 * **Note that in general, raw values are the rendered value for the input field,
+	 * and therefore should not be used for comboboxes or most programmatic logic.**
 	 */
 	setRawValue: function(value) {
         var me = this,
@@ -761,6 +800,29 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         return result;
     },
+
+	/**
+	 * Adds a value or values to the current value of the field
+	 * @param {mixed} valueMixed The value or values to add to the current value
+	 */
+	addValue: function(valueMixed) {
+		var me = this;
+		if (valueMixed) {
+			me.setValue(Ext.Array.merge(me.value, Ext.Array.from(valueMixed)));
+		}
+	},
+
+	/**
+	 * Removes a value or values from the current value of the field
+	 * @param {mixed} valueMixed The value or values to remove from the current value
+	 */
+	removeValue: function(valueMixed) {
+		var me = this;
+
+		if (valueMixed) {
+			me.setValue(Ext.Array.difference(me.value, Ext.Array.from(valueMixed)));
+		}
+	},
 
 	/**
 	 * Intercept calls to setValue to use records from the valueStore when available. 
@@ -789,10 +851,18 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 					value[i] = valueStore.getAt(valueRecord);
 				} else {
 					valueRecord = me.findRecord(valueField, record);
+					if (!valueRecord) {
+						if (me.forceSelection) {
+							unknownValues.push(record);
+						} else {
+							valueRecord = {};
+							valueRecord[me.valueField] = record;
+							valueRecord[me.displayField] = record;
+							valueRecord = new me.valueStore.model(valueRecord);
+						}
+					}
 					if (valueRecord) {
 						value[i] = valueRecord;
-					} else if (me.forceSelection) {
-						unknownValues.push(record);
 					}
 				}
 			} 
@@ -819,8 +889,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 		}
 
 		me.callParent([value, doSelect]);
-
-		me.updateValueStore();
 	},
 
 	/**
@@ -832,15 +900,45 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	},
 
 	/**
-	 * Overridden to handle forcing selections on multiSelect values more directly
+	 * Overridden to handle creation of new value for unforced selections
+	 */
+	beforeBlur: function() {
+		var me = this;
+        me.doQueryTask.cancel();
+		me.assertValue();
+		me.collapse();
+	},
+
+	/**
+	 * Overridden to clear the input field if we are auto-setting a value as we blur.
+	 */
+	mimicBlur: function() {
+		var me = this;
+
+		if (me.selectOnTab && me.picker && me.picker.highlightedItem) {
+			me.inputEl.dom.value = '';
+		} 
+
+		me.callParent(arguments);
+	},
+
+	/**
+	 * Overridden to handle partial-input selections more directly
 	 */
     assertValue: function() {
-        var me = this,
+		var me = this,
 			rawValue = me.inputEl.dom.value,
-			rec = rawValue ? me.findRecordByDisplay(rawValue) : false;
+			rec = !Ext.isEmpty(rawValue) ? me.findRecordByDisplay(rawValue) : false,
+			value = false;
 
-		if (rec && !Ext.Array.contains(me.value, rec.get(me.valueField))) {
-			me.setValue(me.value.concat(rec.get(me.valueField)));
+		if (!rec && !me.forceSelection && me.createNewOnBlur && !Ext.isEmpty(rawValue)) {
+			value = rawValue;
+		} else if (rec) {
+			value = rec;
+		}
+
+		if (value) {
+			me.addValue(value);
 		}
 
 		me.inputEl.dom.value = '';
@@ -849,9 +947,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     },
 
 	/**
-	 * Update the valueStore from the new value and fire changed events for UI updates
+	 * Update the valueStore from the new value and fire change events for UI to respond to
 	 */
-	updateValueStore: function() {
+	checkChange: function() {
 		var me = this,
 			valueStore = me.valueStore;
 
@@ -862,6 +960,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 		}
 		valueStore.resumeEvents();
 		valueStore.fireEvent('datachanged', valueStore);
+
+		me.callParent(arguments);
 	},
 
 	/**

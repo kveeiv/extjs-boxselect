@@ -29,11 +29,11 @@
 	background-color: #DEE7F8; 
 	cursor: default; 
 }
-.x-boxselect-item:hover {
+.x-field:not(.x-item-disabled) .x-boxselect-item:hover {
 	background: #BBCEF1; 
 	border: 1px solid #6D95E0;
 }
-.x-boxselect-item.selected {
+.x-field:not(.x-item-disabled) .x-boxselect-item.selected {
 	border: 1px solid #316AD3 !important;
 	background: #658FDC !important;
 }
@@ -43,10 +43,4 @@
 }
 .x-boxselect-item-close {
 	cursor: pointer; 
-}
-.x-boxselect-item:hover .x-boxselect-item-close {
-	color: #6D95E0;
-}
-.x-boxselect-item-close:hover {
-	color: white !important;
 }
