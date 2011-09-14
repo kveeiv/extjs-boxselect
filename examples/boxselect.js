@@ -1,6 +1,6 @@
 /*
 
-This file contains example usages of the Ext.ux.form.field.BoxSelect component, and is based on the 
+This file contains example usages of the Ext.ux.form.field.BoxSelect component, and is based on the
 examples of comboboxes provided in Ext JS 4.
 
 */
@@ -90,29 +90,10 @@ Ext.onReady(function() {
         labelWidth: 130,
         store: statesStore,
         queryMode: 'local',
+		emptyText: 'Pick a state, any state',
 		valueField: 'abbr',
 		value: 'WA, TX'
     });
-
-	var emails = [
-		'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
-		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
-	];
-
-	// Example of email address field with forceSelection: false
-	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
-		fieldLabel: 'Enter multiple email addresses',
-		renderTo: 'emailSuggest',
-		width: 500,
-		labelWidth: 130,
-		store: emails,
-		queryMode: 'local',
-		forceSelection: false,
-		createNewOnEnter: true,
-		createNewOnBlur: true
-	});
-	// End example of email address field with forceSelection: false
-
 
 	// Example of multiSelect: false
     var singleSelect = Ext.create('Ext.ux.form.field.BoxSelect', {
@@ -124,16 +105,36 @@ Ext.onReady(function() {
         labelWidth: 130,
         store: statesStore,
         queryMode: 'local',
-		value: 'CA',
+		emptyText: 'Pick a state, any state',
 		valueField: 'abbr'
     });
 	// End example of multiSelect: false
 
+    var emails = [
+		'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
+		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
+	];
 
-	// Example of stacked and pinList
-    var stackedView = Ext.create('Ext.ux.form.field.BoxSelect', {
+	// Example of email address field with forceSelection: false
+	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
+		fieldLabel: 'Enter multiple email addresses',
+		renderTo: 'emailSuggest',
+		width: 500,
+        growMin: 75,
+        growMax: 120,
+		labelWidth: 130,
+		store: emails,
+		queryMode: 'local',
+		forceSelection: false,
+		createNewOnEnter: true,
+		createNewOnBlur: true
+	});
+	// End example of email address field with forceSelection: false
+
+	// Example of stacked, pinList, triggerOnClick and other configuration options
+    var otherConfigs = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select multiple states',
-        renderTo: 'stackedSelect',
+        renderTo: 'otherConfigs',
         displayField: 'name',
         width: 500,
         labelWidth: 130,
@@ -142,12 +143,13 @@ Ext.onReady(function() {
 		valueField: 'abbr',
 		value: 'WA, TX',
 		stacked: true,
-		pinList: false
+		pinList: false,
+        triggerOnClick: false
     });
 	// End example of stacked and pinList
 
 
-	// Example of value setting, retrieving and value events
+	// Example of value setting, retrieving and value events, and layout managed height
 	var valuesSelect;
 	var valuesExample = Ext.create('Ext.panel.Panel', {
 		width: 500,
@@ -161,26 +163,14 @@ Ext.onReady(function() {
 			border: false
 		},
 		items: [{
-			xtype: 'component',
-			itemId: 'eventMessages',
-			autoEl: {
-				tag: 'div',
-				html: 'Messages:'
-			}
-		}],
-		tbar: {
-			enableOverflow: true,
-			items: [{
+            xtype: 'container',
+            defaultType: 'button',
+            items: [{
                 text: 'Disable',
                 enableToggle: true,
                 toggleHandler: function(field, state) {
                     valuesSelect.setDisabled(state);
                 }
-            },{
-				text: 'addValue()',
-				handler: function() {
-					emailSuggest.addValue('test@bobbers.com');
-				}
 			},{
 				text: 'getValue()',
 				handler: function() {
@@ -192,6 +182,18 @@ Ext.onReady(function() {
 					window.alert('# of records: ' + valuesSelect.getValueRecords().length);
 				}
 			},{
+                text: 'getSubmitData() - (default)',
+                handler: function() {
+                    valuesSelect.encodeSubmitValue = false;
+                    window.alert(Ext.encode(valuesSelect.getSubmitData()));
+                }
+            },{
+                text: 'getSubmitData() - encodeSubmitValue',
+                handler: function() {
+                    valuesSelect.encodeSubmitValue = true;
+                    window.alert(Ext.encode(valuesSelect.getSubmitData()));
+                }
+            },{
 				text: 'setValue("NY, NJ")',
 				handler: function() {
 					valuesSelect.setValue("NY, NJ");
@@ -207,31 +209,45 @@ Ext.onReady(function() {
 					valuesSelect.removeValue("NJ");
 				}
 			}]
-		}
+        },{
+            xtype: 'container',
+            itemId: 'layoutExampleContainer',
+            height: 75,
+            layout: {
+                type: 'fit'
+            }
+        },{
+			xtype: 'component',
+			itemId: 'eventMessages',
+			autoEl: {
+				tag: 'div',
+				html: 'Messages:'
+			}
+		}]
 	});
 	var messagesBlock = valuesExample.down('#eventMessages');
 	var addMessage = function(msg) {
 		messagesBlock.update(messagesBlock.el.dom.innerHTML + '<br />' + msg);
 	};
-	valuesSelect = valuesExample.insert(0, {
-		xtype: 'boxselect',
-		itemId: 'valuesSelect',
-		fieldLabel: 'Select multiple states',
-		displayField: 'name',
-		labelWidth: 130,
-		store: statesStore,
-		queryMode: 'local',
-		valueField: 'abbr',
-		value: 'WA, TX',
-		listeners: {
-			'change': function(field, newValue, oldValue) {
-				addMessage('[Change event] New value is "' + newValue + '" (Old was "' + oldValue + '")');
-				addMessage('[Select event] ' + field.getValueRecords().length + ' records selected.');
-			},
-			'select': function(field, records) {
-				addMessage('[Select event] ' + records.length + ' records selected.');
-			}
-		}
+    valuesSelect = valuesExample.down('#layoutExampleContainer').add({
+        xtype: 'boxselect',
+        itemId: 'valuesSelect',
+        fieldLabel: 'Select multiple states',
+        displayField: 'name',
+        labelWidth: 130,
+        store: statesStore,
+        queryMode: 'local',
+        valueField: 'abbr',
+        value: 'WA, TX',
+        listeners: {
+            'change': function(field, newValue, oldValue) {
+                addMessage('[Change event] New value is "' + newValue + '" (Old was "' + oldValue + '")');
+                addMessage('[Select event] ' + field.getValueRecords().length + ' records selected.');
+            },
+            'select': function(field, records) {
+                addMessage('[Select event] ' + records.length + ' records selected.');
+            }
+        }
 	});
 	addMessage('[Init] Initialized with string "WA, TX"');
 	// End example of value setting, retrieving and value events

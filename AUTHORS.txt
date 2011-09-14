@@ -1,5 +1,5 @@
 
-	
+
 Ext.ux.form.field.BoxSelect Authors
 
 
