@@ -30,6 +30,7 @@ Bug Fixes:
 * Modified render processing for multiselect items to better manage the input dom element
 * Updated field templates to be forward compatible with 4.0.5 (4.0.2a still supported)
 * Added requirements statement for use by Ext.Loader
+* Fixed user interaction when field is disabled or readOnly
 Documentation:
 * Added example showing some usages of value changing and event listening
 * Minor documentation updates and refactoring
