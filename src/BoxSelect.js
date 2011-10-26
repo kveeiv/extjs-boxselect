@@ -185,10 +185,10 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         if (oldStore) {
             me.mun(oldStore, 'beforeload', me.onBeforeLoad, me);
-        }
-        if (me.valueStore) {
-            me.mun(me.valueStore, 'datachanged', me.applyMultiselectItemMarkup, me);
-            me.valueStore = null;
+            if (me.valueStore) {
+                me.mun(me.valueStore, 'datachanged', me.applyMultiselectItemMarkup, me);
+                me.valueStore = null;
+            }
         }
 
         me.callParent(arguments);
@@ -212,7 +212,20 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         var me = this,
         picker = me.callParent(arguments);
 
-        me.mon(picker, 'beforerefresh', me.onBeforeListRefresh, me);
+        me.mon(picker, {
+            'beforerefresh': me.onBeforeListRefresh,
+            'show': function(pick) {
+                /**
+                 * Temporary fix for reapplying maxHeight after shorter list was previously shown
+                 */
+                var listEl = picker.listEl,
+                ch = listEl.getHeight();
+                if (ch > picker.maxHeight) {
+                    listEl.setHeight(picker.maxHeight);
+                }
+            },
+            scope: me
+        });
 
         return picker;
     },
@@ -299,7 +312,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         if (valueStore) {
             if (!Ext.isEmpty(me.value) && (valueStore.getCount() == 0)) {
-                me.setValue(me.value);
+                me.setValue(me.value, false, true);
             }
 
             valueStore.suspendEvents();
@@ -320,7 +333,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         me.callParent(arguments);
 
-        me.ignoreSelection--;
+        me.ignoreSelection = Ext.Number.constrain(me.ignoreSelection - 1, 0);
     },
 
     /**
@@ -372,7 +385,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 */
     onListRefresh: function() {
         this.callParent(arguments);
-        this.ignoreSelection--;
+        this.ignoreSelection = Ext.Number.constrain(this.ignoreSelection - 1, 0);
     },
 
     /**
@@ -387,7 +400,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         // Only react to selection if it is not called from setValue, and if our list is
         // expanded (ignores changes to the selection model triggered elsewhere)
-        if (!me.ignoreSelection && me.isExpanded) {
+        if ((me.ignoreSelection <= 0) && me.isExpanded) {
             // Pull forward records that were already selected or are now filtered out of the store
             valueStore.each(function(rec) {
                 if (Ext.Array.contains(selectedRecords, rec) || me.isFilteredRecord(rec)) {
@@ -430,12 +443,14 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
             // From the value, find the Models that are in the store's current data
             selection = [];
-            me.valueStore.each(function(rec) {
-                var i = pickStore.findExact(valueField, rec.get(valueField));
-                if (i >= 0) {
-                    selection.push(pickStore.getAt(i));
-                }
-            });
+            if (me.valueStore) {
+                me.valueStore.each(function(rec) {
+                    var i = pickStore.findExact(valueField, rec.get(valueField));
+                    if (i >= 0) {
+                        selection.push(pickStore.getAt(i));
+                    }
+                });
+            }
 
             // Update the selection to match
             me.ignoreSelection++;
@@ -444,7 +459,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             if (selection.length > 0) {
                 selModel.select(selection);
             }
-            me.ignoreSelection--;
+            me.ignoreSelection = Ext.Number.constrain(me.ignoreSelection - 1, 0);
         }
     },
 
@@ -472,9 +487,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 isAbove = picker.el.getY() < me.inputEl.getY();
                 me.bodyEl[isAbove ? 'addCls' : 'removeCls'](me.openCls + aboveSfx);
                 picker.el[isAbove ? 'addCls' : 'removeCls'](picker.baseCls + aboveSfx);
-            }
-            if (picker.getSelectedNodes().length > 0) {
-                picker.getTargetEl().scrollTo('top', pickerScrollPos);
             }
         }
     },
@@ -675,6 +687,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (me.readOnly || me.disabled) {
             return;
         }
+
+        evt.stopPropagation();
 
         if (itemEl) {
             if (closeEl) {
@@ -906,6 +920,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 callback: function() {
                     me.itemList.unmask();
                     me.setValue(value, doSelect, true);
+                    me.autoSize();
                 }
             });
             return false;
@@ -994,22 +1009,34 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 * Update the valueStore from the new value and fire change events for UI to respond to
 	 */
     checkChange: function() {
-        var me = this,
-        valueStore = me.valueStore,
-        models = valueStore.getRange(),
-        value = me.value;
+        if (!this.suspendCheckChange && !this.isDestroyed) {
+            var me = this,
+            valueStore = me.valueStore,
+            lastValue = me.lastValue,
+            valueField = me.valueField,
+            newValue = Ext.Array.map(Ext.Array.from(me.value), function(val) {
+                if (val.isModel) {
+                    return val.get(valueField);
+                }
+                return val;
+            }, this).join(this.delimiter);
 
-        if ((Ext.encode(value) !== Ext.encode(me.lastValue)) || (Ext.isArray(value) && (models.length != value.length))) {
-            valueStore.suspendEvents();
-            valueStore.removeAll();
-            if (Ext.isArray(me.valueModels)) {
-                valueStore.add(me.valueModels);
+            if (valueStore.getCount() != me.valueModels.length) {
+                valueStore.suspendEvents();
+                valueStore.removeAll();
+                if (Ext.isArray(me.valueModels)) {
+                    valueStore.add(me.valueModels);
+                }
+                valueStore.resumeEvents();
+                valueStore.fireEvent('datachanged', valueStore);
             }
-            valueStore.resumeEvents();
-            valueStore.fireEvent('datachanged', valueStore);
-        }
 
-        me.callParent(arguments);
+            if (!me.isEqual(newValue, lastValue)) {
+                me.lastValue = newValue;
+                me.fireEvent('change', me, newValue, lastValue);
+                me.onChange(newValue, lastValue)
+            }
+        }
     },
 
     /**
@@ -1027,6 +1054,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 inputEl.dom.value = emptyText;
                 inputEl.addCls(me.emptyCls);
             } else {
+                inputEl.dom.value = '';
                 inputEl.removeCls(me.emptyCls);
             }
         }
@@ -1262,7 +1290,7 @@ Ext.define('Ext.ux.layout.component.field.BoxSelectField', {
             inputWidth = listWidth - 10;
             lastEntry = inputElCt.dom.previousSibling;
             if (lastEntry) {
-                inputWidth = inputWidth - (lastEntry.offsetLeft + Ext.fly(lastEntry).getWidth());
+                inputWidth = inputWidth - (lastEntry.offsetLeft + Ext.fly(lastEntry).getWidth() + Ext.fly(lastEntry).getPadding('lr'));
             }
             if (inputWidth < 35) {
                 inputWidth = listWidth - 10;

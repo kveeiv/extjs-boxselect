@@ -1,5 +1,23 @@
 CURRENT RELEASE
 ---------------
+
+v1.3 - 25 Oct 2011
+Enhancements:
+* Updated library references to ext-4.0.7-gpl
+Bug Fixes:
+* Fixed input element retaining emptyText when not blank
+* Fixed sizing of input fields
+* Fixed infinite loop loads on auto-querying remote stores
+Documentation:
+* Added more examples for setting initial value
+* Added examples for remote stores with auto-querying of unknown values
+* Minor documentation updates
+
+
+
+Previous Updates
+----------------
+
 v1.2 - 14 Sep 2011
 Enhancements:
 * Added encodeSubmitValue option to submit form value as json encoded string instead of array of POST fields
@@ -15,11 +33,6 @@ Bug Fixes:
 Documentation:
 * Added examples for new configuration options
 * Minor documentation updates and refactoring
-
-
-
-Previous Updates
-----------------
 
 v1.1 - 27 Jul 2011
 Enhancements:
