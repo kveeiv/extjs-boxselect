@@ -81,6 +81,7 @@ Ext.onReady(function() {
         data: states
     });
 
+
     // Basic BoxSelect using the data store
     var basicBoxselect = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select multiple states',
@@ -92,8 +93,22 @@ Ext.onReady(function() {
         queryMode: 'local',
 		emptyText: 'Pick a state, any state',
 		valueField: 'abbr',
-		value: 'WA, TX'
+		value: ['TX', 'CA']
     });
+    var basicBoxselect2 = Ext.create('Ext.ux.form.field.BoxSelect', {
+        fieldLabel: 'More States',
+        renderTo: 'basicBoxselect',
+        displayField: 'name',
+        width: 500,
+        labelWidth: 130,
+        store: statesStore,
+        queryMode: 'local',
+		emptyText: 'Pick a state, any state',
+		valueField: 'abbr',
+		value: 'WA'
+    });
+    // End example of basic BoxSelects
+
 
 	// Example of multiSelect: false
     var singleSelect = Ext.create('Ext.ux.form.field.BoxSelect', {
@@ -110,12 +125,43 @@ Ext.onReady(function() {
     });
 	// End example of multiSelect: false
 
+
+    // Example of automatic remote store queries
+    var remoteStatesStore = Ext.create('Ext.data.Store', {
+        model: 'State',
+        proxy: {
+            type: 'ajax',
+            url: 'states.php',
+            reader: {
+                type: 'json',
+                root: 'states',
+                totalProperty: 'totalCount'
+            }
+        }
+    });
+
+    var autoQuery = Ext.create('Ext.ux.form.field.BoxSelect', {
+        fieldLabel: 'With Remote Store',
+        renderTo: 'autoQuery',
+        displayField: 'name',
+        width: 500,
+        labelWidth: 130,
+        store: remoteStatesStore,
+        pageSize: 25,
+        queryMode: 'remote',
+		emptyText: 'Pick a state, any state',
+		valueField: 'abbr',
+        delimiter: '|',
+		value: 'NC|VA|ZZ'
+    });
+    // End example of automatic remote store queries
+
+
+	// Example of email address field with forceSelection: false
     var emails = [
 		'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
 		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
 	];
-
-	// Example of email address field with forceSelection: false
 	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
 		fieldLabel: 'Enter multiple email addresses',
 		renderTo: 'emailSuggest',
@@ -130,6 +176,7 @@ Ext.onReady(function() {
 		createNewOnBlur: true
 	});
 	// End example of email address field with forceSelection: false
+
 
 	// Example of stacked, pinList, triggerOnClick and other configuration options
     var otherConfigs = Ext.create('Ext.ux.form.field.BoxSelect', {
@@ -241,8 +288,10 @@ Ext.onReady(function() {
         value: 'WA, TX',
         listeners: {
             'change': function(field, newValue, oldValue) {
-                addMessage('[Change event] New value is "' + newValue + '" (Old was "' + oldValue + '")');
-                addMessage('[Select event] ' + field.getValueRecords().length + ' records selected.');
+                addMessage('[Change event] ' +
+                    'New value is "' + newValue + '" ' +
+                    '(Old was "' + oldValue + '") ' +
+                    field.getValueRecords().length + ' records selected.');
             },
             'select': function(field, records) {
                 addMessage('[Select event] ' + records.length + ' records selected.');

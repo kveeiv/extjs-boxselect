@@ -5,18 +5,14 @@
     <title>Ext.ux.form.field.BoxSelect</title>
 
     <!-- ExtJS -->
-    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.2a/resources/css/ext-all.css" />
-    <script type="text/javascript" src="http://dev.sencha.com/deploy/ext-4.0.2a/bootstrap.js"></script>
-
-<!--    <link rel="stylesheet" type="text/css" href="../libs/ext-4.0.5/resources/css/ext-all.css" />-->
-<!--    <script type="text/javascript" src="../libs/ext-4.0.5//bootstrap.js"></script>-->
+    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.7-gpl/resources/css/ext-all.css" />
+    <script type="text/javascript" src="http://dev.sencha.com/deploy/ext-4.0.7-gpl/bootstrap.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../src/BoxSelect.css" />
     <script type="text/javascript" src="../src/BoxSelect.js"></script>
 
     <!-- Shared -->
-    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.2a/examples/shared/example.css" />
-<!--    <link rel="stylesheet" type="text/css" href="../libs/ext-4.0.5/examples/shared/example.css" />-->
+    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.7-gpl/examples/shared/example.css" />
 
     <!-- Example -->
     <script type="text/javascript" src="boxselect.js"></script>
@@ -105,11 +101,14 @@ included here showcase the differences between the default control and this exte
 	and a value is passed to the BoxSelect that is not in the store, a query will be sent to the store's configured proxy with a
 	parameter with the name of the <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>,
 	and a value of the unknown values separated by the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a>. For
-	example if the valueField is 'exampleIdField' and the delimiter is ', ' and unknown values '17' and '3281' are set, the following parameters
+	example if the valueField is 'abbr' and the delimiter is '|' and unknown values 'NC', 'VA' and 'ZZ' are set, the following parameters
 	will be passed to <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.data.Store-method-load">store.load()</a>:</p>
-	<pre>{ exampleIdField: '17, 3281' }</pre>
+	<pre>{ abbr: 'NC|VA|ZZ' }</pre>
 	<p>This attempt to load the unknown values will be performed only once per initValue/setValue call. Any records that are still
-	unknown after this request will be removed from the field's value, but all known values will be retained.</p>
+	unknown after this request will be removed from the field's value, but all known values will be retained. In the above example,
+    the 'ZZ' entry was discarded.</p>
+    <p>A php script (states.php) is included in the example source for a basic implementation of a server side script.</p>
+    <div id="autoQuery"></div>
 </div>
 
 <div class="example">
