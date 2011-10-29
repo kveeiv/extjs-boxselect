@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.1
+ * @version 1.3.1
  * @requires BoxSelect.css
  * @xtype boxselect
  */
