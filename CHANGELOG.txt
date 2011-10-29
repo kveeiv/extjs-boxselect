@@ -1,6 +1,16 @@
 CURRENT RELEASE
 ---------------
 
+v1.3.1 - 29 Oct 2011
+Enhancements:
+* Added template configuration for labeled items
+Bug Fixes:
+* Soothed the aggressive clearing of emptyText that would clear query values
+* Fixed misalignment of picker after store load in some scenarios
+Documentation:
+* Fixed server side parsing of remote store example to use queries
+* Added example template configurations to remote store example
+
 v1.3 - 25 Oct 2011
 Enhancements:
 * Updated library references to ext-4.0.7-gpl

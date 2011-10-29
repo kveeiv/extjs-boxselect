@@ -126,7 +126,7 @@ Ext.onReady(function() {
 	// End example of multiSelect: false
 
 
-    // Example of automatic remote store queries
+    // Example of automatic remote store queries and use of various display templates
     var remoteStatesStore = Ext.create('Ext.data.Store', {
         model: 'State',
         proxy: {
@@ -143,14 +143,30 @@ Ext.onReady(function() {
     var autoQuery = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'With Remote Store',
         renderTo: 'autoQuery',
-        displayField: 'name',
         width: 500,
         labelWidth: 130,
+
         store: remoteStatesStore,
         pageSize: 25,
-        queryMode: 'remote',
 		emptyText: 'Pick a state, any state',
+        queryMode: 'remote',
 		valueField: 'abbr',
+        displayField: 'name',
+
+        triggerOnClick: false,
+
+
+        // New in 1.3.1: Control the rendering of the individual value labels
+        labelTpl: '{name} ({abbr})',
+
+        // This tpl config is part of the native ComboBox and is used to control
+        // the display of the BoundList (picker), and is only included here for reference
+        tpl: Ext.create('Ext.XTemplate',
+            '<ul><tpl for=".">',
+                '<li role="option" class="' + Ext.baseCSSPrefix + 'boundlist-item' + '">{name}: {slogan}</li>',
+            '</tpl></ul>'
+        ),
+
         delimiter: '|',
 		value: 'NC|VA|ZZ'
     });

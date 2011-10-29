@@ -58,12 +58,13 @@ STATES;
 
 $states = json_decode($states, true);
 
-if (isset($_REQUEST['abbr'])) {
-    $abbr = explode('|', $_REQUEST['abbr']);
+$abbr = isset($_REQUEST['abbr']) ? explode('|', strtoupper($_REQUEST['abbr'])) : false;
+$query = isset($_REQUEST['query']) ? strtolower($_REQUEST['query']) : false;
 
+if ($abbr || $query) {
     $matchingStates = array();
     foreach ($states as &$state) {
-        if (in_array($state['abbr'], $abbr)) {
+        if (($abbr && in_array($state['abbr'], $abbr)) || ($query && stristr($state['name'].' '.$state['slogan'], $query))) {
             $matchingStates[] = $state;
         }
     }
