@@ -7,6 +7,7 @@ Enhancements:
 Bug Fixes:
 * Soothed the aggressive clearing of emptyText that would clear query values
 * Fixed misalignment of picker after store load in some scenarios
+* Fixed single select tracking of proper value labels
 Documentation:
 * Fixed server side parsing of remote store example to use queries
 * Added example template configurations to remote store example
