@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.1
+ * @version 1.3.1
  * @requires BoxSelect.css
  * @xtype boxselect
  */
@@ -334,6 +334,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         me.callParent(arguments);
 
         me.ignoreSelection = Ext.Number.constrain(me.ignoreSelection - 1, 0);
+
+        me.alignPicker();
     },
 
     /**
@@ -368,7 +370,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             rawValue = rawValue.split(me.delimiter).pop();
         }
 
-        this.doQuery(rawValue);
+        this.doQuery(rawValue, false, true);
     },
 
     /**
@@ -710,6 +712,14 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         var me = this;
 
         if (!me.multiSelectItemTpl) {
+            if (!me.labelTpl) {
+                me.labelTpl = Ext.create('Ext.XTemplate',
+                    '{[values.' + me.displayField + ']}'
+                );
+            } else if (Ext.isString(me.labelTpl)) {
+                me.labelTpl = Ext.create('Ext.XTemplate', me.labelTpl);
+            }
+
             me.multiSelectItemTpl = [
             '<tpl for=".">',
             '<li class="x-boxselect-item ',
@@ -717,7 +727,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             ' selected',
             '</tpl>',
             '" qtip="{[typeof values === "string" ? values : values.' + me.displayField + ']}">' ,
-            '<div class="x-boxselect-item-text">{[typeof values === "string" ? values : values.' + me.displayField + ']}</div>',
+            '<div class="x-boxselect-item-text">{[typeof values === "string" ? values : this.getItemLabel(values)]}</div>',
             '<div class="x-tab-close-btn x-boxselect-item-close"></div>' ,
             '</li>' ,
             '</tpl>',
@@ -729,6 +739,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                     if (i >= 0) {
                         return me.selectionModel.isSelected(me.valueStore.getAt(i));
                     }
+                },
+                getItemLabel: function(values) {
+                    return me.getTpl('labelTpl').apply(values);
                 }
             }
             ];
@@ -1054,7 +1067,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 inputEl.dom.value = emptyText;
                 inputEl.addCls(me.emptyCls);
             } else {
-                inputEl.dom.value = '';
+                if (inputEl.dom.value === emptyText) {
+                    inputEl.dom.value = '';
+                }
                 inputEl.removeCls(me.emptyCls);
             }
         }
