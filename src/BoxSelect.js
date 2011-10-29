@@ -1034,7 +1034,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 return val;
             }, this).join(this.delimiter);
 
-            if (valueStore.getCount() != me.valueModels.length) {
+            if (!me.isEqual(newValue, lastValue)) {
                 valueStore.suspendEvents();
                 valueStore.removeAll();
                 if (Ext.isArray(me.valueModels)) {
@@ -1042,9 +1042,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 }
                 valueStore.resumeEvents();
                 valueStore.fireEvent('datachanged', valueStore);
-            }
 
-            if (!me.isEqual(newValue, lastValue)) {
                 me.lastValue = newValue;
                 me.fireEvent('change', me, newValue, lastValue);
                 me.onChange(newValue, lastValue)
