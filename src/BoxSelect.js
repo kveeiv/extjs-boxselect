@@ -144,8 +144,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             typeAhead: false
         });
 
-        me.callParent(arguments);
-
         me.typeAhead = typeAhead;
 
         me.selectionModel = new Ext.selection.Model({
@@ -159,6 +157,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (!Ext.isEmpty(me.delimiter) && me.multiSelect) {
             me.delimiterEndingRegexp = new RegExp(String(me.delimiter).replace(/[$%()*+.?\[\\\]{|}]/g, "\\$&") + "$");
         }
+        
+        me.callParent(arguments);
+        
     },
 
     /**
