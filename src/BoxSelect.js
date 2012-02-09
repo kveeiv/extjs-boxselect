@@ -471,8 +471,11 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     alignPicker: function() {
         var me = this,
         picker, isAbove,
-        aboveSfx = '-above',
-        itemBox = me.itemList.getBox(false, true);
+        aboveSfx = '-above';
+        
+        if(me.itemList) {
+            var itemBox = me.itemList.getBox(false, true);
+        }     
 
         if (this.isExpanded) {
             picker = me.getPicker();
