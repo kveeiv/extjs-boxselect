@@ -472,14 +472,14 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         var me = this,
         picker, isAbove,
         aboveSfx = '-above',
-        itemBox = me.itemList.getBox(false, true);
+        itemBox = me.itemList ? me.itemList.getBox(false, true) : null;
 
         if (this.isExpanded) {
             picker = me.getPicker();
             var pickerScrollPos = picker.getTargetEl().dom.scrollTop;
             if (me.matchFieldWidth) {
                 // Auto the height (it will be constrained by min and max width) unless there are no records to display.
-                picker.setSize(itemBox.width, picker.store && picker.store.getCount() ? null : 0);
+                picker.setSize(itemBox ? itemBox.width : null, picker.store && picker.store.getCount() ? null : 0);
             }
             if (picker.isFloating()) {
                 picker.alignTo(me.itemList, me.pickerAlign, me.pickerOffset);
