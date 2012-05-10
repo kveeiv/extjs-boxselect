@@ -21,8 +21,8 @@
  * Many thanks go out to all of those who have contributed, this extension would not be
  * possible without your help.
  *
- * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.3.1-moritori-r4
+ * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv, Moritori (upgrade to extjs 4.1)
+ * @version 1.3.1-moritori-r5
  * @requires BoxSelect.css, BoxSelectField.js
  * @xtype boxselect
  */
@@ -1030,7 +1030,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                     return val.get(valueField);
                 }
                 return val;
-            }, this).join(this.delimiter);
+            }, this);
 
             if (!me.isEqual(newValue, lastValue)) {
                 valueStore.suspendEvents();
