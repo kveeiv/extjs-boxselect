@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.3.1-moritori-r3
+ * @version 1.3.1-moritori-r4
  * @requires BoxSelect.css, BoxSelectField.js
  * @xtype boxselect
  */
@@ -1178,11 +1178,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         'class="x-boxselect-input-field" autocomplete="off" />',
         '</li>',
         '</ul>',
-        '<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
-        '{triggerEl}',
-        '<div class="{clearCls}" role="presentation"></div>',
-        '</div>',
-        '<div class="{clearCls}" role="presentation"></div>',
         '</div>',
         {
             compiled: true,
