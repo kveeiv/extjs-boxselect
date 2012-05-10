@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.3.1-moritori-r1
+ * @version 1.3.1-moritori-r2
  * @requires BoxSelect.css, BoxSelectField.js
  * @xtype boxselect
  */
@@ -126,9 +126,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      * (defaults to <tt>false</tt>, which allows for natural growth based on selections)
      */
     growMax: false,
-
-    //private
-    componentLayout: 'boxselectfield',
 
     /**
 	 * Initialize additional settings and enable simultaneous typeAhead and multiSelect support
