@@ -22,7 +22,7 @@
  * possible without your help.
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 1.3.1-moritori-r2
+ * @version 1.3.1-moritori-r3
  * @requires BoxSelect.css, BoxSelectField.js
  * @xtype boxselect
  */
@@ -1164,71 +1164,33 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     }
 
 }, function() {
-    /**
-     * ExtJS 4.0.5 introduced more optimized ways of referencing child elements. As this is
-     * currently a subscriber only release, these registrations are performed here for
-     * backwards compatibility with the currently available public version 4.0.2a
-     */
-
-    var useNewSelectors = !Ext.getVersion('extjs').isLessThan('4.0.5'),
     overrides = {};
 
-    if (useNewSelectors) {
-        Ext.apply(overrides, {
-            fieldSubTpl: [
-            '<div class="x-boxselect">',
-            '<ul id="{cmpId}-itemList" class="x-boxselect-list {fieldCls} {typeCls}">',
-            '<li id="{cmpId}-inputElCt" class="x-boxselect-input">',
-            '<input id="{cmpId}-inputEl" type="{type}" ',
-            '<tpl if="name">name="{name}" </tpl>',
-            '<tpl if="size">size="{size}" </tpl>',
-            '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
-            'class="x-boxselect-input-field" autocomplete="off" />',
-            '</li>',
-            '</ul>',
-            '<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
-            '{triggerEl}',
-            '<div class="{clearCls}" role="presentation"></div>',
-            '</div>',
-            '<div class="{clearCls}" role="presentation"></div>',
-            '</div>',
-            {
-                compiled: true,
-                disableFormats: true
-            }
-            ],
-            childEls: ['itemList', 'inputEl', 'inputElCt']
-        });
-    } else {
-        Ext.apply(overrides, {
-            fieldSubTpl: [
-            '<div class="x-boxselect">',
-            '<ul class="x-boxselect-list {fieldCls} {typeCls}">',
-            '<li class="x-boxselect-input">',
-            '<input id="{id}" type="{type}" ',
-            '<tpl if="name">name="{name}" </tpl>',
-            '<tpl if="size">size="{size}" </tpl>',
-            '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
-            'class="x-boxselect-input-field" autocomplete="off" />',
-            '</li>',
-            '</ul>',
-            '<div class="{triggerWrapCls}" role="presentation">',
-            '{triggerEl}',
-            '<div class="{clearCls}" role="presentation"></div>',
-            '</div>',
-            '</div>',
-            {
-                compiled: true,
-                disableFormats: true
-            }
-            ],
-            renderSelectors: {
-                itemList: 'ul.x-boxselect-list',
-                inputEl: 'input.x-boxselect-input-field',
-                inputElCt: 'li.x-boxselect-input'
-            }
-        });
-    }
+    Ext.apply(overrides, {
+        fieldSubTpl: [
+        '<div class="x-boxselect">',
+        '<ul id="{cmpId}-itemList" class="x-boxselect-list {fieldCls} {typeCls}">',
+        '<li id="{cmpId}-inputElCt" class="x-boxselect-input">',
+        '<input id="{cmpId}-inputEl" type="{type}" ',
+        '<tpl if="name">name="{name}" </tpl>',
+        '<tpl if="size">size="{size}" </tpl>',
+        '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
+        'class="x-boxselect-input-field" autocomplete="off" />',
+        '</li>',
+        '</ul>',
+        '<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
+        '{triggerEl}',
+        '<div class="{clearCls}" role="presentation"></div>',
+        '</div>',
+        '<div class="{clearCls}" role="presentation"></div>',
+        '</div>',
+        {
+            compiled: true,
+            disableFormats: true
+        }
+        ],
+        childEls: ['itemList', 'inputEl', 'inputElCt']
+    });
 
     Ext.override(this, overrides);
 });
