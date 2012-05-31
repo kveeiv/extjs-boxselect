@@ -42,7 +42,7 @@
 }
 .x-boxselect-item-text {
 	line-height: 16px;
-	padding-right: 20px;
+	padding-right: 20px !important;
 }
 .x-boxselect-item-close {
 	cursor: pointer;
