@@ -478,8 +478,10 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             picker = me.getPicker();
             var pickerScrollPos = picker.getTargetEl().dom.scrollTop;
             if (me.matchFieldWidth) {
-                // Auto the height (it will be constrained by min and max width) unless there are no records to display.
-                picker.setSize(itemBox.width, picker.store && picker.store.getCount() ? null : 0);
+                //set height to auto to allow empty text shows.
+                picker.setSize(itemBox.width, null);
+                //keep scroll position of suggest list
+                picker.getTargetEl().dom.scrollTop = pickerScrollPos;
             }
             if (picker.isFloating()) {
                 picker.alignTo(me.itemList, me.pickerAlign, me.pickerOffset);
