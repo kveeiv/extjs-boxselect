@@ -931,7 +931,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             me.store.load({
                 params: params,
                 callback: function() {
-                    me.itemList.unmask();
+                    if (me.itemList) {
+                        me.itemList.unmask();
+                    }
                     me.setValue(value, doSelect, true);
                     me.autoSize();
                 }
