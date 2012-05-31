@@ -5,6 +5,7 @@
 	padding: 0px;
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
 }
 
 .x-boxselect input {
