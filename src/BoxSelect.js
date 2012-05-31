@@ -86,8 +86,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      * @cfg {Boolean} encodeSubmitValue
      * Controls the formatting of the form submit value of the field. (defaults to <code>false</code>). This
      * is not applicable of {@link #multiSelect} is false.
-     * <code>true</code> for the field value to submit as a json encoded array in a single POST variable
-     * <code>false</code> for the field to submit as an array of POST variables
+     * <code>true</code> for the field value to submit as a json encoded array in a single GET/POST variable
+     * <code>false</code> for the field to submit as an array of GET/POST variables
      */
     encodeSubmitValue: false,
 
@@ -144,8 +144,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             typeAhead: false
         });
 
-        me.callParent(arguments);
-
         me.typeAhead = typeAhead;
 
         me.selectionModel = new Ext.selection.Model({
@@ -155,10 +153,49 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 commitFn();
             }
         });
+        
+        var transform;
+        var transformNodes;
+        var transformNodesClone;
+        
+        if (me.transform !== undefined) {
+        	transform = me.transform + "-shadow";
+        	transformNodes = Ext.get(me.transform);
+        	transformNodesClone = Ext.clone(transformNodes);
+        	transformNodesClone.set({"id": transform});
+        	transformNodesClone.appendTo(transformNodes.parent());
+        	transformNodesClone.setVisibilityMode(Ext.Element.DISPLAY);
+        	transformNodesClone.hide();
+        }
+
+		me.callParent(arguments);
+		
+		if (transform !== undefined) {
+			me.transform = transform;
+			var children = transformNodesClone.dom.children;
+			var value = [], thisValue;
+			for (i = 0; i < children.length; i++) {
+				thisValue = children[i].getAttribute("selected");
+				if (typeof thisValue == "string") {
+					var recordId = me.store.find(me.valueField, children[i].getAttribute("value"));
+					if (recordId >= 0) {
+						value.push(me.store.getAt(recordId));
+					}
+				}
+			}
+			if (value.length > 0) {
+				me.setValue(value, false, true);
+				me.fireEvent('select', me, value);
+			}
+		}
+		
 
         if (!Ext.isEmpty(me.delimiter) && me.multiSelect) {
             me.delimiterEndingRegexp = new RegExp(String(me.delimiter).replace(/[$%()*+.?\[\\\]{|}]/g, "\\$&") + "$");
         }
+        
+        me.callParent(arguments);
+        
     },
 
     /**
@@ -471,15 +508,20 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     alignPicker: function() {
         var me = this,
         picker, isAbove,
-        aboveSfx = '-above',
-        itemBox = me.itemList.getBox(false, true);
+        aboveSfx = '-above';
+        
+        if(me.itemList) {
+            var itemBox = me.itemList.getBox(false, true);
+        }     
 
         if (this.isExpanded) {
             picker = me.getPicker();
             var pickerScrollPos = picker.getTargetEl().dom.scrollTop;
             if (me.matchFieldWidth) {
-                // Auto the height (it will be constrained by min and max width) unless there are no records to display.
-                picker.setSize(itemBox.width, picker.store && picker.store.getCount() ? null : 0);
+                //set height to auto to allow empty text shows.
+                picker.setSize(itemBox.width, null);
+                //keep scroll position of suggest list
+                picker.getTargetEl().dom.scrollTop = pickerScrollPos;
             }
             if (picker.isFloating()) {
                 picker.alignTo(me.itemList, me.pickerAlign, me.pickerOffset);
@@ -941,6 +983,22 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             return false;
         }
 
+		if (me.transform) {
+			var transformNodes = Ext.get(me.transform);
+			var newChildren = "";
+			for (i = 0; i < value.length; i++) {
+				// Build up the new innerHTML for transform
+				var valueRecord = value[i];
+				newChildren += "<option value='" + valueRecord.raw[0] +
+				               "' selected='selected'>" + valueRecord.raw[1] +
+				               '</option>';
+			}
+			//
+			if (value.length > 0 && typeof value[0] == "object") {
+				transformNodes.update(newChildren);
+			}
+		}
+
         /**
 		 * For single-select boxes, use the last value
 		 */
@@ -1047,7 +1105,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
                 me.lastValue = newValue;
                 me.fireEvent('change', me, newValue, lastValue);
-                me.onChange(newValue, lastValue)
+                me.onChange(newValue, lastValue);
             }
         }
     },
@@ -1183,11 +1241,12 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             '<div class="x-boxselect">',
             '<ul id="{cmpId}-itemList" class="x-boxselect-list {fieldCls} {typeCls}">',
             '<li id="{cmpId}-inputElCt" class="x-boxselect-input">',
+            // This breaks transformed forms...
+            //'<input id="{cmpId}-inputEl" type="{type}" ',
             '<input id="{cmpId}-inputEl" type="{type}" ',
-            '<tpl if="name">name="{name}" </tpl>',
             '<tpl if="size">size="{size}" </tpl>',
             '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
-            'class="x-boxselect-input-field" autocomplete="off" />',
+            'class="x-boxselect-input-field" autocomplete="off">',
             '</li>',
             '</ul>',
             '<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
@@ -1209,11 +1268,12 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             '<div class="x-boxselect">',
             '<ul class="x-boxselect-list {fieldCls} {typeCls}">',
             '<li class="x-boxselect-input">',
+            // This breaks transformed forms...
+            //'<input id="{id}" type="{type}" ',
             '<input id="{id}" type="{type}" ',
-            '<tpl if="name">name="{name}" </tpl>',
             '<tpl if="size">size="{size}" </tpl>',
             '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
-            'class="x-boxselect-input-field" autocomplete="off" />',
+            'class="x-boxselect-input-field" autocomplete="off">',
             '</li>',
             '</ul>',
             '<div class="{triggerWrapCls}" role="presentation">',
