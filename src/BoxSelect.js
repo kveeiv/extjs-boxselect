@@ -996,7 +996,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (Ext.isString(value) && me.multiSelect) {
             value = value.split(me.delimiter);
         }
-        value = Ext.Array.from(value);
+        value = Ext.Array.from(value, true);
 
         for (i = 0, len = value.length; i < len; i++) {
             record = value[i];
