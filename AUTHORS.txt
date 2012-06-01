@@ -1,0 +1,20 @@
+
+
+Ext.ux.form.field.BoxSelect Authors
+
+
+This ExtJS4 user extension consists of voluntary contributions made by many individuals. For an
+exact list of contributors, please see the official forum thread:
+
+http://www.sencha.com/forum/showthread.php?134751-Ext.ux.form.field.BoxSelect-Intuitive-Multi-Select-ComboBox
+
+
+Special thanks to the extensive contributions from:
+
+Kevin Vaughan (kveeiv, http://www.sencha.com/forum/member.php?29437-kveeiv)
+kleins (http://www.sencha.com/forum/member.php?77882-kleins)
+JorisA (http://www.sencha.com/forum/member.php?2016-JorisA)
+moritori (https://github.com/moritori)
+
+
+

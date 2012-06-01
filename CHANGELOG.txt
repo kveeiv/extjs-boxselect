@@ -1,0 +1,113 @@
+CURRENT RELEASE
+---------------
+
+v2.0 - 31 May 2012
+Enhancements:
+* General improvements for use with 4.1 using various new standard functionality
+* Added filterPickList option for removing selected values from picker
+* Added clipboard paste support for selecting values
+* Added ctrl-a keyboard shortcut to auto-add all values when pick list is expanded
+Bug Fixes:
+* Fixed various layout problems for 4.1
+* Fixed various sequencing issues that would sometimes cause errors before/during rendering
+* Removed deprecated 4.0 functionality and overrides that are now standard
+* Improved stability of auto-selection of items
+* Changed some internal value handling for more consistency and stability
+Documentation:
+* Added example for filterPickList
+* Changed extjs library references to official 4.1 cdn sources
+
+
+
+Previous Updates
+----------------
+
+v1.3.1 - 29 Oct 2011
+Enhancements:
+* Added template configuration for labeled items
+Bug Fixes:
+* Soothed the aggressive clearing of emptyText that would clear query values
+* Fixed misalignment of picker after store load in some scenarios
+* Fixed single select tracking of proper value labels
+Documentation:
+* Fixed server side parsing of remote store example to use queries
+* Added example template configurations to remote store example
+
+v1.3 - 25 Oct 2011
+Enhancements:
+* Updated library references to ext-4.0.7-gpl
+Bug Fixes:
+* Fixed input element retaining emptyText when not blank
+* Fixed sizing of input fields
+* Fixed infinite loop loads on auto-querying remote stores
+Documentation:
+* Added more examples for setting initial value
+* Added examples for remote stores with auto-querying of unknown values
+* Minor documentation updates
+
+v1.2 - 14 Sep 2011
+Enhancements:
+* Added encodeSubmitValue option to submit form value as json encoded string instead of array of POST fields
+* Added triggerOnClick option to emulate a trigger click when clicking in the field (like uneditable ComboBox)
+* Added grow/growMin/growMax options and respect for fixed field heights
+* Moved sizing logic component layout class for consistency with main library
+Bug Fixes:
+* Fixed rendering templates to take more advantage of 4.0.5's new selector methods
+* Fixed field height growth issues in container layouts that provide fixed heights
+* Modified pinList behavior to also clear the input field after selection
+* Fixed some sequencing issues that would sometimes cause inefficient/undesirable/incorrect processing
+* Fixed various issues with use of emptyText configuration
+Documentation:
+* Added examples for new configuration options
+* Minor documentation updates and refactoring
+
+v1.1 - 27 Jul 2011
+Enhancements:
+* Added createOnBlur option to create new records when forceSelection is false
+* Added addValue and removeValue functions to allow for discrete programmatic management of values
+Bug Fixes:
+* Modified some ordering of value tracking to ensure the current values were available for select/change events
+* Modified render processing for multiselect items to better manage the input dom element
+* Updated field templates to be forward compatible with 4.0.5 (4.0.2a still supported)
+* Added requirements statement for use by Ext.Loader
+* Fixed user interaction when field is disabled or readOnly
+Documentation:
+* Added example showing some usages of value changing and event listening
+* Minor documentation updates and refactoring
+
+v1.0 - 20 Jul 2011
+* Fixes to rendering of field validation
+* Integration of features from kleins boxselect implementation
+* Fixes to value management for remote stores
+* Changes to value setting to allow for delimiter split strings of values, arrays of values, arrays of records,
+  and arrays of unknown values (for on-demand remote store loading when queryMode 'remote' and forceSelection true)
+* Added keyboard based navigation
+* Added support for forceSelection false for use-cases like entry of multiple email addresses with auto-suggest
+* Added configuration option for collapsing the open list when multiSelect is true
+* Added stacked rendering style option; added full examples page
+* Added to github with github pages hosting of examples page
+* Significant documentation updates and refactoring
+
+v0.5 - 16 Jun 2011
+* Added support for multiSelect false
+* Added typeAhead support (not possible with ComboBox's multiSelect)
+* Improved automatic field resizing
+* Ensured compatibility with 4.0.2a and with the Ext.ux.form.field.ClearButton plugin
+* Minor documentation updates and refactoring
+
+v0.4 - 8 Jun 2011
+* Styling updates for multi-selected item removal controls to match tab removal controls and improve rendering performance
+* Remote queryMode support
+* Addition of autosize event to indicate change in height similar to the textarea field
+* Fixes to value tracking to ensure the change event is properly fired
+* Minor documentation updates and reorganization of functions
+
+v0.3 - 1 Jun 2011
+* Change sizing of user input area to adjust dynamically with remaining width
+* Fix various issues with display of emptyText
+
+v0.2 - 27 May 2011
+* Change to use default value setting if store is unfiltered
+
+v0.1 - 25 May 2011
+* Initial release

@@ -1,6 +1,6 @@
 /*
 
-This file contains example usages of the Ext.ux.form.field.BoxSelect component, and is based on the 
+This file contains example usages of the Ext.ux.form.field.BoxSelect component, and is based on the
 examples of comboboxes provided in Ext JS 4.
 
 */
@@ -81,6 +81,7 @@ Ext.onReady(function() {
         data: states
     });
 
+
     // Basic BoxSelect using the data store
     var basicBoxselect = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select multiple states',
@@ -90,26 +91,26 @@ Ext.onReady(function() {
         labelWidth: 130,
         store: statesStore,
         queryMode: 'local',
+		emptyText: 'Pick a state, any state',
 		valueField: 'abbr',
-		value: 'WA, TX'
+		value: ['TX', 'CA']
     });
+    var basicBoxselect2 = Ext.create('Ext.ux.form.field.BoxSelect', {
+        fieldLabel: 'More States',
+        renderTo: 'basicBoxselect',
+        displayField: 'name',
+        width: 500,
+        labelWidth: 130,
+        store: statesStore,
+        queryMode: 'local',
+		emptyText: 'Pick a state, any state',
+		valueField: 'abbr',
+		value: 'WA'
+    });
+    // End example of basic BoxSelects
 
-	var emails = [
-		'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
-		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
-	];
 
-	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
-		fieldLabel: 'Enter multiple email addresses',
-		renderTo: 'emailSuggest',
-		width: 500,
-		labelWidth: 130,
-		store: emails,
-		queryMode: 'local',
-		forceSelection: false,
-		createNewOnEnter: true
-	});
-
+	// Example of multiSelect: false
     var singleSelect = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select a state',
         renderTo: 'singleSelect',
@@ -119,13 +120,85 @@ Ext.onReady(function() {
         labelWidth: 130,
         store: statesStore,
         queryMode: 'local',
-		value: 'CA',
+		emptyText: 'Pick a state, any state',
 		valueField: 'abbr'
     });
+	// End example of multiSelect: false
 
-    var stackedView = Ext.create('Ext.ux.form.field.BoxSelect', {
+
+    // Example of automatic remote store queries and use of various display templates
+    var remoteStatesStore = Ext.create('Ext.data.Store', {
+        model: 'State',
+        proxy: {
+            type: 'ajax',
+            url: 'states.php',
+            reader: {
+                type: 'json',
+                root: 'states',
+                totalProperty: 'totalCount'
+            }
+        }
+    });
+
+    var autoQuery = Ext.create('Ext.ux.form.field.BoxSelect', {
+        fieldLabel: 'With Remote Store',
+        renderTo: 'autoQuery',
+        width: 500,
+        labelWidth: 130,
+
+        store: remoteStatesStore,
+        pageSize: 25,
+		emptyText: 'Pick a state, any state',
+        queryMode: 'remote',
+		valueField: 'abbr',
+        displayField: 'name',
+
+        triggerOnClick: false,
+
+
+        // New in 1.3.1: Control the rendering of the individual value labels
+        labelTpl: '{name} ({abbr})',
+
+        // This tpl config is part of the native ComboBox and is used to control
+        // the display of the BoundList (picker), and is only included here for reference
+        tpl: Ext.create('Ext.XTemplate',
+            '<ul><tpl for=".">',
+                '<li role="option" class="' + Ext.baseCSSPrefix + 'boundlist-item' + '">{name}: {slogan}</li>',
+            '</tpl></ul>'
+        ),
+
+        delimiter: '|',
+		value: 'NC|VA|ZZ'
+    });
+    // End example of automatic remote store queries
+
+
+	// Example of email address field with forceSelection: false
+    var emails = [
+		'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
+		'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
+	];
+	var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
+		fieldLabel: 'Enter multiple email addresses',
+		renderTo: 'emailSuggest',
+		width: 500,
+        growMin: 75,
+        growMax: 120,
+		labelWidth: 130,
+		store: emails,
+		queryMode: 'local',
+		forceSelection: false,
+		createNewOnEnter: true,
+		createNewOnBlur: true,
+        filterPickList: true
+	});
+	// End example of email address field with forceSelection: false
+
+
+	// Example of stacked, pinList, triggerOnClick and other configuration options
+    var otherConfigs = Ext.create('Ext.ux.form.field.BoxSelect', {
         fieldLabel: 'Select multiple states',
-        renderTo: 'stackedSelect',
+        renderTo: 'otherConfigs',
         displayField: 'name',
         width: 500,
         labelWidth: 130,
@@ -134,9 +207,116 @@ Ext.onReady(function() {
 		valueField: 'abbr',
 		value: 'WA, TX',
 		stacked: true,
-		pinList: false
+		pinList: false,
+        triggerOnClick: false,
+        filterPickList: true
     });
+	// End example of stacked and pinList
 
-	
+
+	// Example of value setting, retrieving and value events, and layout managed height
+	var valuesSelect;
+	var valuesExample = Ext.create('Ext.panel.Panel', {
+		width: 500,
+		bodyPadding: 5,
+		renderTo: 'valueSetting',
+		layout: {
+			type: 'anchor'
+		},
+		defaults: {
+			anchor: '100%',
+			border: false
+		},
+		items: [{
+            xtype: 'container',
+            defaultType: 'button',
+            items: [{
+                text: 'Disable',
+                enableToggle: true,
+                toggleHandler: function(field, state) {
+                    valuesSelect.setDisabled(state);
+                }
+			},{
+				text: 'getValue()',
+				handler: function() {
+					window.alert(valuesSelect.getValue());
+				}
+			},{
+				text: 'getValueRecords().length',
+				handler: function() {
+					window.alert('# of records: ' + valuesSelect.getValueRecords().length);
+				}
+			},{
+                text: 'getSubmitData() - (default)',
+                handler: function() {
+                    valuesSelect.encodeSubmitValue = false;
+                    window.alert(Ext.encode(valuesSelect.getSubmitData()));
+                }
+            },{
+                text: 'getSubmitData() - encodeSubmitValue',
+                handler: function() {
+                    valuesSelect.encodeSubmitValue = true;
+                    window.alert(Ext.encode(valuesSelect.getSubmitData()));
+                }
+            },{
+				text: 'setValue("NY, NJ")',
+				handler: function() {
+					valuesSelect.setValue("NY, NJ");
+				}
+			},{
+				text: 'addValue("CA")',
+				handler: function() {
+					valuesSelect.addValue("CA");
+				}
+			},{
+				text: 'removeValue("NJ")',
+				handler: function() {
+					valuesSelect.removeValue("NJ");
+				}
+			}]
+        },{
+            xtype: 'container',
+            itemId: 'layoutExampleContainer',
+            height: 100,
+            layout: {
+                type: 'fit'
+            }
+        },{
+			xtype: 'component',
+			itemId: 'eventMessages',
+			autoEl: {
+				tag: 'div',
+				html: 'Messages:'
+			}
+		}]
+	});
+	var messagesBlock = valuesExample.down('#eventMessages');
+	var addMessage = function(msg) {
+		messagesBlock.update(messagesBlock.el.dom.innerHTML + '<br />' + msg);
+	};
+    valuesSelect = valuesExample.down('#layoutExampleContainer').add({
+        xtype: 'boxselect',
+        itemId: 'valuesSelect',
+        fieldLabel: 'Select multiple states',
+        displayField: 'name',
+        labelWidth: 130,
+        store: statesStore,
+        queryMode: 'local',
+        valueField: 'abbr',
+        value: 'WA, TX',
+        listeners: {
+            'change': function(field, newValue, oldValue) {
+                addMessage('[Change event] ' +
+                    'New value is "' + newValue + '" ' +
+                    '(Old was "' + oldValue + '") ' +
+                    field.getValueRecords().length + ' records selected.');
+            },
+            'select': function(field, records) {
+                addMessage('[Select event] ' + records.length + ' records selected.');
+            }
+        }
+	});
+	addMessage('[Init] Initialized with string "WA, TX"');
+	// End example of value setting, retrieving and value events
 
 });
