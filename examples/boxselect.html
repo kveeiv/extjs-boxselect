@@ -38,6 +38,11 @@
 		.config-options li {
 			list-style: disc inside;
 		}
+        .example h3 {
+            margin: 10px;
+            font-size: 1.1em;
+            color: #c00;
+        }
 		.example pre {
 			margin-bottom: 20px;
 		}
@@ -97,6 +102,9 @@ included here showcase the differences between the default control and this exte
 
 <div class="example">
 	<h2>Automatic querying of remote stores for unknown values</h2>
+    <h3>Please note: the example page hosted on the github pages do not allow execution of php scripts,
+    so this example will not work there. This example requires hosting on a server that allows php script execution as it
+    is meant to demonstrate more complex interactions with a remote server.</h3>
 	<p>If <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-queryMode">queryMode</a> is set to 'remote',
 	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is set to true,
 	and a value is passed to the BoxSelect that is not in the store, a query will be sent to the store's configured proxy with a
