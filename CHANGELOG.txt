@@ -1,6 +1,27 @@
 CURRENT RELEASE
 ---------------
 
+v2.0 - 31 May 2012
+Enhancements:
+* General improvements for use with 4.1 using various new standard functionality
+* Added filterPickList option for removing selected values from picker
+* Added clipboard paste support for selecting values
+* Added ctrl-a keyboard shortcut to auto-add all values when pick list is expanded
+Bug Fixes:
+* Fixed various layout problems for 4.1
+* Fixed various sequencing issues that would sometimes cause errors before/during rendering
+* Removed deprecated 4.0 functionality and overrides that are now standard
+* Improved stability of auto-selection of items
+* Changed some internal value handling for more consistency and stability
+Documentation:
+* Added example for filterPickList
+* Changed extjs library references to official 4.1 cdn sources
+
+
+
+Previous Updates
+----------------
+
 v1.3.1 - 29 Oct 2011
 Enhancements:
 * Added template configuration for labeled items
@@ -23,11 +44,6 @@ Documentation:
 * Added more examples for setting initial value
 * Added examples for remote stores with auto-querying of unknown values
 * Minor documentation updates
-
-
-
-Previous Updates
-----------------
 
 v1.2 - 14 Sep 2011
 Enhancements:

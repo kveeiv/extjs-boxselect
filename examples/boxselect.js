@@ -189,7 +189,8 @@ Ext.onReady(function() {
 		queryMode: 'local',
 		forceSelection: false,
 		createNewOnEnter: true,
-		createNewOnBlur: true
+		createNewOnBlur: true,
+        filterPickList: true
 	});
 	// End example of email address field with forceSelection: false
 
@@ -207,7 +208,8 @@ Ext.onReady(function() {
 		value: 'WA, TX',
 		stacked: true,
 		pinList: false,
-        triggerOnClick: false
+        triggerOnClick: false,
+        filterPickList: true
     });
 	// End example of stacked and pinList
 
@@ -275,7 +277,7 @@ Ext.onReady(function() {
         },{
             xtype: 'container',
             itemId: 'layoutExampleContainer',
-            height: 75,
+            height: 100,
             layout: {
                 type: 'fit'
             }

@@ -5,14 +5,15 @@
     <title>Ext.ux.form.field.BoxSelect</title>
 
     <!-- ExtJS -->
-    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.7-gpl/resources/css/ext-all.css" />
-    <script type="text/javascript" src="http://dev.sencha.com/deploy/ext-4.0.7-gpl/bootstrap.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css" />
+
+    <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-all-debug.js"></script>
 
     <link rel="stylesheet" type="text/css" href="../src/BoxSelect.css" />
     <script type="text/javascript" src="../src/BoxSelect.js"></script>
 
     <!-- Shared -->
-    <link rel="stylesheet" type="text/css" href="http://dev.sencha.com/deploy/ext-4.0.7-gpl/examples/shared/example.css" />
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/examples/shared/example.css" />
 
     <!-- Example -->
     <script type="text/javascript" src="boxselect.js"></script>
@@ -24,7 +25,7 @@
         .example {
             width: 600px;
             border: 1px solid #CCC;
-            padding: 0 10px;
+            padding: 0 10px 10px 10px;
             margin: 0 0 10px;
         }
         .x-fieldset {
@@ -119,11 +120,16 @@ included here showcase the differences between the default control and this exte
 	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-displayField">displayField</a> and
 	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>. These new
 	records are <b>not</b> added to the combo's store automatically.</p>
-	<p>There are three methods of determining when a new entry will be created:</p>
+	<p>There are four methods of determining when a new entry will be created:</p>
 	<ul class="config-options">
 		<li>
 			When the user types the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
 			the value that the user entered before the delimiter will be used to create a new record.
+		</li>
+		<li>
+			When a user pastes in to the field, the value will be split according to the configured
+            <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
+			and any values entered will be parsed in to new/existing records.
 		</li>
 		<li>
 			<a href="#">createNewOnEnter</a> is defaulted to false.  If set to true, a new entry will be created when the user presses Enter.
@@ -159,6 +165,9 @@ included here showcase the differences between the default control and this exte
             be used for the field's minimum height.</li>
         <li><a href="#">growMax</a> is defaulted to false.  If <a href="#">grow</a> is true, any numeric value will
             be used for the field's maximum height and the list of selections will scroll when necessary.</li>
+        <li><a href="#">filterPickList</a> is defaulted to false. If set to true, currently selected values will
+            be hidden from the expanded pick list.  This is done via css to maintain simplicity of store
+            and filter management and consistency for both local and remote querying.</li>
 	</ul>
 	<div id="otherConfigs"></div>
 </div>

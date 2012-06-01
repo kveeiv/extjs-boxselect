@@ -1,20 +1,18 @@
-.x-boxselect ul.x-boxselect-list {
-	height: auto;
+.x-boxselect.x-form-text {
+    height: auto;
 	cursor: text;
-	min-height: 20px;
-	padding: 0px;
+    padding: 0;
     overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
 }
-
+.x-boxselect ul.x-boxselect-list {
+    padding: 1px 3px;
+}
 .x-boxselect input {
 	border: none;
 	background: none;
 	line-height: 18px;
 	height: 20px;
 	width: 100%;
-	padding: 1px 3px;
 }
 .x-boxselect-input, .x-boxselect-item {
 	display: inline-block;
@@ -46,4 +44,7 @@
 }
 .x-boxselect-item-close {
 	cursor: pointer;
+}
+.x-boxselect-hideselections .x-boundlist-selected {
+    display: none;
 }
