@@ -7,6 +7,10 @@
 .x-boxselect ul.x-boxselect-list {
     padding: 1px 3px;
 }
+ul.x-boxselect-list.x-boxselect-singleselect {
+    white-space: nowrap;
+    overflow: hidden;
+}
 .x-boxselect input {
 	border: none;
 	background: none;
