@@ -4,19 +4,26 @@
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>Ext.ux.form.field.BoxSelect</title>
 
-    <!-- ExtJS -->
-    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css" />
-
+    <!-- ExtJS from CDN -->
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/examples/shared/example.css">
     <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-all-debug.js"></script>
 
+    <!-- ExtJS from local lib -->
+    <!--
+    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.0/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.0/examples/shared/example.css" />
+    <script type="text/javascript" charset="utf-8" src="../libs/extjs-4.1.0/ext-all-debug.js"></script>
+    //-->
+
+    <!-- BoxSelect Source -->
     <link rel="stylesheet" type="text/css" href="../src/BoxSelect.css" />
     <script type="text/javascript" src="../src/BoxSelect.js"></script>
 
-    <!-- Shared -->
-    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/examples/shared/example.css" />
-
     <!-- Example -->
+    <script type="text/javascript" src="boxselect-data.js"></script>
     <script type="text/javascript" src="boxselect.js"></script>
+
     <style type="text/css">
         body {
             padding-bottom: 50px;
@@ -50,46 +57,56 @@
 
 </head>
 <body>
-
 <h1>BoxSelects</h1>
 <p>The js is not minified so it is readable. See <a href="boxselect.js">boxselect.js</a> to view the code for these examples.</p>
-<p>Ext.ux.form.field.BoxSelect extends <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox">Ext.form.field.ComboBox</a> to
+<p>Ext.ux.form.field.BoxSelect extends <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">Ext.form.field.ComboBox</a> to
 provide a more 'multiSelect'-friendly control. The careful efforts made in this extension enable most (if not all) of the
-<a href="http://dev.sencha.com/deploy/ext-4.0.2a/examples/form/combos.html">ComboBox examples</a> to convert to BoxSelects easily. The examples
+<a href="http://docs.sencha.com/ext-js/4-1/#!/example/form/combos.html">ComboBox examples</a> to convert to BoxSelects easily. The examples
 included here showcase the differences between the default control and this extension.</p>
 
 <div class="example">
     <h2>Basic Configuration</h2>
-	<p>All configuration values for <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox">ComboBox</a> should work, but some defaults are changed:</p>
+	<p>All configuration values for <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">ComboBox</a> should work, but some defaults are changed:</p>
 	<ul class="config-options">
 		<li>
-			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-multiSelect">multiSelect</a> is defaulted to <b>true</b>.<br />
+			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-multiSelect">multiSelect</a> is defaulted to <b>true</b>.<br />
 			Though single-select is supported, the primary use case for BoxSelect is multiSelect.
 		</li>
 		<li>
-			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is defaulted to <b>true</b>.<br />
+			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is defaulted to <b>true</b>.<br />
 			Most typical uses of multiple selections are from pre-formed lists, with some rare exceptions like multiple emails with auto-suggest.
 		</li>
 		<li>
-			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-typeAhead">typeAhead</a> is still defaulted to <b>false</b>, but
+			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-typeAhead">typeAhead</a> is still defaulted to <b>false</b>, but
 			support for this feature has been added for multiSelect='true'. The basic combobox control does not support typeAhead in multiSelect configurations.
 		</li>
 		<li>
-			<p><a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-value">value</a> can be used to initialize multiSelect values. The
+			<p><a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-value">value</a> can be used to initialize multiSelect values. The
 			same formats of values are accepted for this as are accepted by calls to setValue.</p>
 			<ul>
-				<li>A string associated to the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a></li>
+				<li>A string associated to the configured <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a></li>
 				<li>When multiSelect is true, a string that is split using the field's
-					<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a></li>
+					<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a></li>
 				<li>An array of values associated to the configured
-					<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a></li>
+					<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a></li>
 				<li>An array of records of the Model type associated to the field's
-					<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-store">store</a></li>
+					<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-store">store</a></li>
 			</ul>
 		</li>
 	</ul>
 
     <div id="basicBoxselect"></div>
+</div>
+
+<div class="example">
+	<h2>Templates</h2>
+	<p>Display of the selected values and the dropdowns are both configurable via templates.</p>
+	<ul class="config-options">
+		<li><a href="#">labelTpl</a> controls the display of selected values within the textfield box.</li>
+		<li><a href="#">listConfig</a> part of the standard ComboBox control, controls the display of values
+            within the dropdown pick list.</li>
+	</ul>
+	<div id="templateConfigs"></div>
 </div>
 
 <div class="example">
@@ -105,13 +122,13 @@ included here showcase the differences between the default control and this exte
     <h3>Please note: the example page hosted on the github pages do not allow execution of php scripts,
     so this example will not work there. This example requires hosting on a server that allows php script execution as it
     is meant to demonstrate more complex interactions with a remote server.</h3>
-	<p>If <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-queryMode">queryMode</a> is set to 'remote',
-	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is set to true,
+	<p>If <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-queryMode">queryMode</a> is set to 'remote',
+	<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is set to true,
 	and a value is passed to the BoxSelect that is not in the store, a query will be sent to the store's configured proxy with a
-	parameter with the name of the <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>,
-	and a value of the unknown values separated by the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a>. For
+	parameter with the name of the <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>,
+	and a value of the unknown values separated by the configured <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a>. For
 	example if the valueField is 'abbr' and the delimiter is '|' and unknown values 'NC', 'VA' and 'ZZ' are set, the following parameters
-	will be passed to <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.data.Store-method-load">store.load()</a>:</p>
+	will be passed to <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store-method-load">store.load()</a>:</p>
 	<pre>{ abbr: 'NC|VA|ZZ' }</pre>
 	<p>This attempt to load the unknown values will be performed only once per initValue/setValue call. Any records that are still
 	unknown after this request will be removed from the field's value, but all known values will be retained. In the above example,
@@ -125,18 +142,18 @@ included here showcase the differences between the default control and this exte
     <p>The combo below illustrates the usage of 'forceSelection: false' with the BoxSelect component to enable the
 	entry of multiple email addresses, with auto-suggestions provided from the attached store. New records are
 	created using the user input for both the configured
-	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-displayField">displayField</a> and
-	<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>. These new
+	<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-displayField">displayField</a> and
+	<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>. These new
 	records are <b>not</b> added to the combo's store automatically.</p>
 	<p>There are four methods of determining when a new entry will be created:</p>
 	<ul class="config-options">
 		<li>
-			When the user types the configured <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
+			When the user types the configured <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
 			the value that the user entered before the delimiter will be used to create a new record.
 		</li>
 		<li>
 			When a user pastes in to the field, the value will be split according to the configured
-            <a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
+            <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a> (defaults to ', '),
 			and any values entered will be parsed in to new/existing records.
 		</li>
 		<li>
@@ -146,8 +163,8 @@ included here showcase the differences between the default control and this exte
 		<li>
 			<a href="#">createNewOnBlur</a> is defaulted to false.  If set to true, a new entry will be created when focus leaves the input
 			field.  This configuration option only applies if forceSelection is false, and is superceded by
-			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-autoSelect">autoSelect</a> and
-			<a href="http://docs.sencha.com/ext-js/4-0/#/api/Ext.form.field.ComboBox-cfg-selectOnTab">selectOnTab</a>.
+			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-autoSelect">autoSelect</a> and
+			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-selectOnTab">selectOnTab</a>.
 		</li>
 	</ul>
     <div id="emailSuggest"></div>

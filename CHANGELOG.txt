@@ -1,7 +1,27 @@
 CURRENT RELEASE
 ---------------
 
-v2.0 - 31 May 2012
+v2.1 - 13 Jun 2012
+Enhancements:
+* Reorganized source (particularly config options) for easier readability and maintenance
+Bug Fixes:
+* Disabled auto-growing when multiSelect is false
+* Fixed initial display of emptyText on first render
+* Dereference setValue parameters to prevent unexpected value manipulation
+Documentation:
+* Updated external documentation links from 4.0 to 4.1
+* Added all documentation from example page to inline class documentation
+* Revised and expanded inline documentation throughout for clarity
+* Changed inline documentation format to jsduck for consistency with framework docs
+* Split example data out from example usage for easier readability
+* Add note to remote store example explaining required remote server capabilities
+* Add example showing more advanced template configuration
+
+
+Previous Updates
+----------------
+
+v2.0 - 31 May 2012 - 4.1 compliant, breaks backwards compatibility to 4.0
 Enhancements:
 * General improvements for use with 4.1 using various new standard functionality
 * Added filterPickList option for removing selected values from picker
@@ -16,11 +36,6 @@ Bug Fixes:
 Documentation:
 * Added example for filterPickList
 * Changed extjs library references to official 4.1 cdn sources
-
-
-
-Previous Updates
-----------------
 
 v1.3.1 - 29 Oct 2011
 Enhancements:
