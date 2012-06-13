@@ -1,7 +1,7 @@
 CURRENT RELEASE
 ---------------
 
-v2.1 - 13 Jun 2012
+v2.0.1 - 13 Jun 2012
 Enhancements:
 * Reorganized source (particularly config options) for easier readability and maintenance
 Bug Fixes:
