@@ -785,6 +785,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
             if ((key == e.BACKSPACE) || (key == e.DELETE)) {
                 if (lastSelectionIndex > -1) {
+                    if (selModel.getCount() > 1) {
+                        lastSelectionIndex = -1;
+                    }
                     me.valueStore.remove(selModel.getSelection());
                 } else {
                     me.valueStore.remove(me.valueStore.last());
