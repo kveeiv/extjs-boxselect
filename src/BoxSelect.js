@@ -184,7 +184,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      * @cfg {Number/Boolean}
      * Has no effect if {@link #grow} is `false`
      *
-     * The maximum height to allow when {@link #grow} is `true`, or `false to allow for
+     * The maximum height to allow when {@link #grow} is `true`, or `false` to allow for
      * natural vertical growth based on the current selected values. See also {@link #growMin}.
      */
     growMax: false,
@@ -287,6 +287,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         me.selectionModel = new Ext.selection.Model({
             store: me.valueStore,
             mode: 'MULTI',
+            lastFocused: null,
             onSelectChange: function(record, isSelected, suppressEvent, commitFn) {
                 commitFn();
             }
@@ -311,7 +312,19 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         }
         me.mon(me.inputEl, 'paste', me.onPaste, me);
         me.mon(me.listWrapper, 'click', me.onItemListClick, me);
-        me.mon(me.selectionModel, 'selectionchange', me.applyMultiselectItemMarkup, me);
+
+        // I would prefer to use relayEvents here to forward these events on, but I want
+        // to pass the field instead of exposing the underlying selection model
+        me.mon(me.selectionModel, {
+            'selectionchange': function(selModel, selectedRecs) {
+                me.applyMultiselectItemMarkup();
+                me.fireEvent('valueselectionchange', me, selectedRecs);
+            },
+            'focuschange': function(selectionModel, oldFocused, newFocused) {
+                me.fireEvent('valuefocuschange', me, oldFocused, newFocused);
+            },
+            scope: me
+        });
     },
 
     /**
@@ -349,6 +362,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         if (valueStore) {
             if (me.selectionModel) {
+                me.selectionModel.setLastFocused(null);
                 me.selectionModel.deselectAll();
                 me.selectionModel.bindStore(null);
             }
@@ -749,51 +763,54 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         rawValue = me.inputEl.dom.value,
         valueStore = me.valueStore,
         selModel = me.selectionModel,
-        stopEvent = false,
-        rec, i;
+        stopEvent = false;
 
         if (me.readOnly || me.disabled || !me.editable) {
             return;
         }
 
-        // Handle keyboard based navigation of selected labelled items
         if (me.isExpanded && (key == e.A && e.ctrlKey)) {
+            // CTRL-A when picker is expanded - add all items in current picker store page to current value
             me.select(me.getStore().getRange());
-            selModel.deselectAll(true);
+            selModel.setLastFocused(null);
+            selModel.deselectAll();
             me.collapse();
             me.inputEl.focus();
             stopEvent = true;
         } else if ((valueStore.getCount() > 0) &&
                 ((rawValue == '') || ((me.getCursorPosition() === 0) && !me.hasSelectedText()))) {
+            // Keyboard navigation of current values
+            var lastSelectionIndex = (selModel.getCount() > 0) ? valueStore.indexOf(selModel.getLastSelected() || selModel.getLastFocused()) : -1;
+
             if ((key == e.BACKSPACE) || (key == e.DELETE)) {
-                if (selModel.getCount() > 0) {
+                if (lastSelectionIndex > -1) {
                     me.valueStore.remove(selModel.getSelection());
                 } else {
                     me.valueStore.remove(me.valueStore.last());
                 }
+                selModel.clearSelections();
                 me.setValue(me.valueStore.getRange());
-                selModel.deselectAll();
+                if (lastSelectionIndex > 0) {
+                    selModel.select(lastSelectionIndex - 1);
+                }
                 stopEvent = true;
             } else if ((key == e.RIGHT) || (key == e.LEFT)) {
-                if ((selModel.getCount() === 0) && (key == e.LEFT)) {
+                if ((lastSelectionIndex == -1) && (key == e.LEFT)) {
                     selModel.select(valueStore.last());
                     stopEvent = true;
-                } else if (selModel.getCount() > 0) {
-                    rec = selModel.getLastFocused() || selModel.getLastSelected();
-                    if (rec) {
-                        i = valueStore.indexOf(rec);
-                        if (key == e.RIGHT) {
-                            if (i < (valueStore.getCount() - 1)) {
-                                selModel.select(i + 1, e.shiftKey);
-                                stopEvent = true;
-                            } else if (!e.shiftKey) {
-                                selModel.deselect(rec);
-                                stopEvent = true;
-                            }
-                        } else if ((key == e.LEFT) && (i > 0)) {
-                            selModel.select(i - 1, e.shiftKey);
+                } else if (lastSelectionIndex > -1) {
+                    if (key == e.RIGHT) {
+                        if (lastSelectionIndex < (valueStore.getCount() - 1)) {
+                            selModel.select(lastSelectionIndex + 1, e.shiftKey);
+                            stopEvent = true;
+                        } else if (!e.shiftKey) {
+                            selModel.setLastFocused(null);
+                            selModel.deselectAll();
                             stopEvent = true;
                         }
+                    } else if ((key == e.LEFT) && (lastSelectionIndex > 0)) {
+                        selModel.select(lastSelectionIndex - 1, e.shiftKey);
+                        stopEvent = true;
                     }
                 }
             } else if (key == e.A && e.ctrlKey) {
@@ -819,6 +836,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         }
 
         if (!e.isSpecialKey() && !e.hasModifier()) {
+            me.selectionModel.setLastFocused(null);
             me.selectionModel.deselectAll();
             me.inputEl.focus();
         }
@@ -982,12 +1000,21 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (itemEl) {
             if (closeEl) {
                 me.removeByListItemNode(itemEl);
+                if (me.valueStore.getCount() > 0) {
+                    me.fireEvent('select', me, me.valueStore.getRange());
+                }
             } else {
                 me.toggleSelectionByListItemNode(itemEl, evt.shiftKey);
             }
             me.inputEl.focus();
-        } else if (me.triggerOnClick) {
-            me.onTriggerClick();
+        } else {
+            if (me.selectionModel.getCount() > 0) {
+                me.selectionModel.setLastFocused(null);
+                me.selectionModel.deselectAll();
+            }
+            if (me.triggerOnClick) {
+                me.onTriggerClick();
+            }
         }
     },
 
@@ -1027,6 +1054,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                     if (i >= 0) {
                         return me.selectionModel.isSelected(me.valueStore.getAt(i));
                     }
+                    return false;
                 },
                 getItemLabel: function(values) {
                     return me.getTpl('labelTpl').apply(values);
@@ -1093,13 +1121,17 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 */
     toggleSelectionByListItemNode: function(itemEl, keepExisting) {
         var me = this,
-        rec = me.getRecordByListItemNode(itemEl);
+        rec = me.getRecordByListItemNode(itemEl),
+        selModel = me.selectionModel;
 
         if (rec) {
-            if (me.selectionModel.isSelected(rec)) {
-                me.selectionModel.deselect(rec);
+            if (selModel.isSelected(rec)) {
+                if (selModel.isFocused(rec)) {
+                    selModel.setLastFocused(null);
+                }
+                selModel.deselect(rec);
             } else {
-                me.selectionModel.select(rec, keepExisting);
+                selModel.select(rec, keepExisting);
             }
         }
     },
