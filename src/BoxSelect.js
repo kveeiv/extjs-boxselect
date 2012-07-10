@@ -242,6 +242,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         '<tpl if="value"> value="{[Ext.util.Format.htmlEncode(values.value)]}"</tpl>',
         '<tpl if="size">size="{size}" </tpl>',
         '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
+        '<tpl if="disabled"> disabled="disabled"</tpl>',
         'class="x-boxselect-input-field {inputElCls}" autocomplete="off">',
         '</li>',
         '</ul>',
