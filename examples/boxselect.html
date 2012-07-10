@@ -5,15 +5,15 @@
     <title>Ext.ux.form.field.BoxSelect</title>
 
     <!-- ExtJS from CDN -->
-    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.0-gpl/examples/shared/example.css">
-    <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.0-gpl/ext-all-debug.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/extjs-4.1.1-gpl/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/extjs-4.1.1-gpl/examples/shared/example.css">
+    <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/extjs-4.1.1-gpl/ext-all-debug.js"></script>
 
     <!-- ExtJS from local lib -->
     <!--
-    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.0/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.0/examples/shared/example.css" />
-    <script type="text/javascript" charset="utf-8" src="../libs/extjs-4.1.0/ext-all-debug.js"></script>
+    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.1/resources/css/ext-all.css">
+    <link rel="stylesheet" type="text/css" href="../libs/extjs-4.1.1/examples/shared/example.css" />
+    <script type="text/javascript" charset="utf-8" src="../libs/extjs-4.1.1/ext-all-debug.js"></script>
     //-->
 
     <!-- BoxSelect Source -->
@@ -27,6 +27,25 @@
     <style type="text/css">
         body {
             padding-bottom: 50px;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        h2 {
+            font-size: 1.5em;
+        }
+
+        .toc {
+            margin-bottom: 10px;
+        }
+        .toc li {
+            list-style: disc inside;
+        }
+        .linktotoc {
+            position: absolute;
+            margin-top: -30px;
+            margin-left: 455px;
+            font-size: 0.8em;
         }
 
         .example {
@@ -45,6 +64,9 @@
 		.config-options li {
 			list-style: disc inside;
 		}
+        .example h2 {
+            font-size: 1.5em;
+        }
         .example h3 {
             margin: 10px;
             font-size: 1.1em;
@@ -53,19 +75,60 @@
 		.example pre {
 			margin-bottom: 20px;
 		}
+        .eventmessagebox {
+            border: 1px solid #ccc !important;
+            padding: 2px;
+        }
     </style>
 
 </head>
 <body>
-<h1>BoxSelects</h1>
+<h1>Ext.ux.form.field.BoxSelect Examples and Reference</h1>
 <p>The js is not minified so it is readable. See <a href="boxselect.js">boxselect.js</a> to view the code for these examples.</p>
 <p>Ext.ux.form.field.BoxSelect extends <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">Ext.form.field.ComboBox</a> to
 provide a more 'multiSelect'-friendly control. The careful efforts made in this extension enable most (if not all) of the
 <a href="http://docs.sencha.com/ext-js/4-1/#!/example/form/combos.html">ComboBox examples</a> to convert to BoxSelects easily. The examples
-included here showcase the differences between the default control and this extension.</p>
+included here showcase the differences between the default control and this extension, provide general information about advanced usage
+of BoxSelect, and are used as test cases when resolving reported issues and developing new functionality.</p>
 
+<h2><a name="toc"></a>Table of Contents</h2>
+<ul class="toc">
+    <li>
+        <a href="#basicConfiguration">Basic Configuration</a>:
+        Basic use of the value-handling related configurations
+    </li>
+    <li>
+        <a href="#templates">Templates</a>:
+        Custom display templates for selected values and pick list items
+    </li>
+    <li>
+        <a href="#singleSelection">Single Value Selection</a>:
+        Specialized behavior for non-multiselect BoxSelect
+    </li>
+    <li>
+        <a href="#remoteQuerying">Remote Querying and Unknown Values</a>:
+        Automated querying of a remote store for unknown values
+    </li>
+    <li>
+        <a href="#autoSuggestion">Multiple email address with auto-suggestion</a>:
+        Example field for multiple email addresses from a store, and new addresses with
+        automatic value record creation when typed or pasted.
+    </li>
+    <li>
+        <a href="#variousOptions">Other varied configuration options</a>:
+        Various customizable behavior for the field input and pick lists.
+    </li>
+    <li>
+        <a href="#eventsAndValues">Programmatic value management and event listeners</a>:
+        Examples of setting and retrieving the value of the BoxSelect programmatically,
+        and logging from value and selection related events.
+    </li>
+</ul>
+
+<div><hr /><a name="basicConfiguration">&nbsp;</a></div>
 <div class="example">
     <h2>Basic Configuration</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>All configuration values for <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">ComboBox</a> should work, but some defaults are changed:</p>
 	<ul class="config-options">
 		<li>
@@ -98,8 +161,10 @@ included here showcase the differences between the default control and this exte
     <div id="basicBoxselect"></div>
 </div>
 
+<div><hr /><a name="templates">&nbsp;</a></div>
 <div class="example">
 	<h2>Templates</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>Display of the selected values and the dropdowns are both configurable via templates.</p>
 	<ul class="config-options">
 		<li><a href="#">labelTpl</a> controls the display of selected values within the textfield box.</li>
@@ -109,16 +174,20 @@ included here showcase the differences between the default control and this exte
 	<div id="templateConfigs"></div>
 </div>
 
+<div><hr /><a name="singleSelection">&nbsp;</a></div>
 <div class="example">
 	<h2>Single Select</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>While the primary use case for BoxSelect is for multiple selection, single selection can also be set with multiSelect: false.
 	If you want this to be the default case for all BoxSelect's, you can do so by adding the following before your BoxSelects are created:</p>
 	<pre>Ext.ux.form.field.BoxSelect.prototype.multiSelect = false;</pre>
 	<div id="singleSelect"></div>
 </div>
 
+<div><hr /><a name="remoteQuerying">&nbsp;</a></div>
 <div class="example">
-	<h2>Automatic querying of remote stores for unknown values</h2>
+	<h2>Unknown Value Handling with Remote Stores</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
     <h3>Please note: the example page hosted on the github pages do not allow execution of php scripts,
     so this example will not work there. This example requires hosting on a server that allows php script execution as it
     is meant to demonstrate more complex interactions with a remote server.</h3>
@@ -137,8 +206,10 @@ included here showcase the differences between the default control and this exte
     <div id="autoQuery"></div>
 </div>
 
+<div><hr /><a name="autoSuggestion">&nbsp;</a></div>
 <div class="example">
-    <h2>forceSelection: false -- Multiple Emails with Auto-suggest</h2>
+    <h2>Multiple Emails with Auto-suggest</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
     <p>The combo below illustrates the usage of 'forceSelection: false' with the BoxSelect component to enable the
 	entry of multiple email addresses, with auto-suggestions provided from the attached store. New records are
 	created using the user input for both the configured
@@ -170,8 +241,10 @@ included here showcase the differences between the default control and this exte
     <div id="emailSuggest"></div>
 </div>
 
+<div><hr /><a name="variousOptions">&nbsp;</a></div>
 <div class="example">
-	<h2>Other configuration options</h2>
+	<h2>Other Configuration Options</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following configuration options are specific to the BoxSelect.</p>
 	<ul class="config-options">
 		<li><a href="#">createNewOnEnter</a> - please see the above forceSelection: false example.</li>
@@ -197,8 +270,10 @@ included here showcase the differences between the default control and this exte
 	<div id="otherConfigs"></div>
 </div>
 
+<div><hr /><a name="eventsAndValues">&nbsp;</a></div>
 <div class="example">
-	<h2>Value setting and events</h2>
+	<h2>Value Setting and Events</h2>
+    <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following shows examples of manually managing the values of the field and displays the value-based events. Except where noted,
 	the mixedValue parameters can be specified in any of the forms listed in the Basic Configuration examples above. In general, getRawValue
 	and setRawValue should not be used, as of ExtJS 4 they are formally for the rendered field output only.</p>
