@@ -24,7 +24,7 @@
  * See [AUTHORS.txt](../AUTHORS.TXT) for a list of major contributors
  *
  * @author kvee_iv http://www.sencha.com/forum/member.php?29437-kveeiv
- * @version 2.0.2
+ * @version 2.0.3
  * @requires BoxSelect.css
  * @xtype boxselect
  *
