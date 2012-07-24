@@ -1,6 +1,17 @@
 CURRENT RELEASE
 ---------------
 
+v2.0.3 - 24 Jul 2012
+Bug Fixes:
+* Resolved field layout issues in complex container layouts
+* Resolved destruction order to prevent javascript errors from sometimes occurring
+Documentation
+* Added button control to examples to show component configurations inline
+
+
+Previous Updates
+----------------
+
 v2.0.2 - 10 Jul 2012
 Enhancements:
 * Exposed highlight selection events for focusing on selected values
@@ -11,9 +22,6 @@ Documentation:
 * Added table of contents for navigation between examples
 * Added highlight selection events to event logger example
 * Minor styling changes to improve readability
-
-Previous Updates
-----------------
 
 v2.0.1 - 13 Jun 2012
 Enhancements:

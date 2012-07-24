@@ -4,12 +4,39 @@ This file contains example usages of the Ext.ux.form.field.BoxSelect component, 
 examples of comboboxes provided in Ext JS 4.
 
 */
+Ext.USE_NATIVE_JSON = false;
+
 Ext.require([
     'Ext.ux.form.field.BoxSelect'
     ]);
 
 Ext.onReady(function() {
+    /**
+     * Tooltip setup to use for showing example configurations
+     */
     Ext.tip.QuickTipManager.init();
+    var cfgTip = Ext.create('Ext.tip.ToolTip', {
+        autoHide: false,
+        maxWidth: 600,
+        html: 'Field Configuration:',
+        renderTo: Ext.getBody()
+    });
+    var createShowConfigButton = function(config, fieldCmp) {
+        var fieldCfg = Ext.String.htmlEncode(Ext.JSON.encodeValue(config, "\n"));
+        Ext.create('Ext.Button', {
+            text: 'Show Config',
+            cls: 'btn-examplecfg',
+            renderTo: fieldCmp.initialConfig.renderTo,
+            handler: function() {
+                cfgTip.update(
+                    cfgTip.initialConfig.html + '<br />' +
+                    '<pre>' + fieldCfg  + '</pre>'
+                );
+                cfgTip.showBy(fieldCmp.el, 'tl-tr?');
+            }
+        });
+    };
+
 
     /**
      * Configuration options that are used throughout these examples, unless
@@ -26,32 +53,33 @@ Ext.onReady(function() {
         queryMode: 'local'
     };
 
+    var addExampleSelect = function(config, renderTo) {
+        var fieldCfg = Ext.applyIf(config, baseExampleConfig);
+        var fieldCmp = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
+            renderTo: renderTo
+        }, fieldCfg));
+        createShowConfigButton(fieldCfg, fieldCmp);
+    }
 
     /**
      * Basic BoxSelect using the data store, initialized with multiple values
      */
-    var basicBoxselect = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
-        renderTo: 'basicBoxselect',
+    addExampleSelect({
         value: ['TX', 'CA']
-    }, baseExampleConfig));
-
+    }, 'basicBoxselect');
 
     /**
      * Basic BoxSelect using the data store, initialized with a single value
      */
-    var basicBoxselect2 = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
+    addExampleSelect({
         fieldLabel: 'More States',
-        renderTo: 'basicBoxselect',
         value: 'WA'
-    }, baseExampleConfig));
-
+    }, 'basicBoxselect');
 
     /**
      * Example of more advanced template configurations
      */
-    var templateConfigs = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
-        renderTo: 'templateConfigs',
-
+    addExampleSelect({
         delimiter: ', ', // Default, reiterated for showing use in concat'd value
         value: 'AZ, CA, NC',
 
@@ -61,27 +89,24 @@ Ext.onReady(function() {
         // This tpl config is part of the native ComboBox and is used to control
         // the display of the BoundList (picker), and is only included here for reference
         listConfig: {
-            tpl: Ext.create('Ext.XTemplate',
+            tpl: [
                 '<ul><tpl for=".">',
                 '<li role="option" class="' + Ext.baseCSSPrefix + 'boundlist-item' + '"' +
                 ' style="background-image:url({flagUrl}); background-repeat: no-repeat; background-size: 25px; padding-left: 30px;">' +
                 '{name}: {slogan}</li>',
                 '</tpl></ul>'
-                )
+            ]
         }
-    }, baseExampleConfig));
-
+    }, 'templateConfigs');
 
     /**
      * Example of multiSelect: false
      */
-    var singleSelect = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
+    addExampleSelect({
         fieldLabel: 'Select a state',
-        renderTo: 'singleSelect',
         multiSelect: false,
         filterPickList: true
-    }, baseExampleConfig));
-
+    }, 'singleSelect');
 
     /**
      * Example of:
@@ -92,11 +117,10 @@ Ext.onReady(function() {
      * - Modifying templates used for selected values (labelTpl)
      * - Modifying templates used for dropdown list (part of the default ComboBox behavior, listConfig.tpl)
      */
-    var autoQuery = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
+    addExampleSelect({
         fieldLabel: 'With Remote Store',
 
         // Remote store things
-        renderTo: 'autoQuery',
         store: 'RemoteStates',
         pageSize: 25,
         queryMode: 'remote',
@@ -111,13 +135,13 @@ Ext.onReady(function() {
         // Display template modifications
         labelTpl: '{name} ({abbr})',
         listConfig: {
-            tpl: Ext.create('Ext.XTemplate',
+            tpl: [
                 '<ul><tpl for=".">',
                 '<li role="option" class="' + Ext.baseCSSPrefix + 'boundlist-item' + '">{name}: {slogan}</li>',
                 '</tpl></ul>'
-                )
+            ]
         }
-    }, baseExampleConfig));
+    }, 'autoQuery');
 
 
     /**
@@ -133,9 +157,8 @@ Ext.onReady(function() {
     'test@example.com', 'somebody@somewhere.net', 'johnjacob@jingleheimerschmidts.org',
     'rumpelstiltskin@guessmyname.com', 'fakeaddresses@arefake.com', 'bob@thejoneses.com'
     ];
-    var emailSuggest = Ext.create('Ext.ux.form.field.BoxSelect', {
+    addExampleSelect({
         fieldLabel: 'Enter multiple email addresses',
-        renderTo: 'emailSuggest',
         width: 500,
         growMin: 75,
         growMax: 120,
@@ -146,15 +169,14 @@ Ext.onReady(function() {
         createNewOnEnter: true,
         createNewOnBlur: true,
         filterPickList: true
-    });
+    }, 'emailSuggest');
 
 
     /**
      * Example of stacked, pinList, triggerOnClick and other configuration options
      */
-    var otherConfigs = Ext.create('Ext.ux.form.field.BoxSelect', {
+    addExampleSelect({
         fieldLabel: 'Select multiple states',
-        renderTo: 'otherConfigs',
         displayField: 'name',
         width: 500,
         labelWidth: 130,
@@ -166,8 +188,7 @@ Ext.onReady(function() {
         pinList: false,
         triggerOnClick: false,
         filterPickList: true
-    });
-
+    }, 'otherConfigs');
 
     /**
      * Example of value setting, retrieving and value events, and layout managed height
@@ -296,5 +317,5 @@ Ext.onReady(function() {
     });
     addMessage('[Init] Initialized with string "WA, TX"');
     valuesSelect.show();
-// End example of value setting, retrieving and value events
+    // End example of value setting, retrieving and value events
 });
