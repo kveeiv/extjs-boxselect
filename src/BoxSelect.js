@@ -35,6 +35,22 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     requires: ['Ext.selection.Model', 'Ext.data.Store'],
 
     //
+    // Begin configuration options related to the underlying store
+    //
+    
+    /**
+     * @cfg {String} valueParam
+     * The name of the parameter used to load unknown records into the store. If left unspecified, {@link #valueField}
+     * will be used.
+     */
+
+    //
+    // End of configuration options related to the underlying store
+    //
+
+
+
+    //
     // Begin configuration options related to selected values
     //
 
@@ -1231,7 +1247,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      *    This record will be added to the current value, but it will **not** be added to the store.
      * 2. If {@link #forceSelection} is `true` and {@link #queryMode} is `remote`, the list of unknown
      *    values will be submitted as a call to the {@link #store}'s load as a parameter named by
-     *    the {@link #valueField} with values separated by the configured {@link #delimiter}.
+     *    the {@link #valueParam} with values separated by the configured {@link #delimiter}.
      *    ** This process will cause setValue to asynchronously process. ** This will only be attempted
      *    once. Any unknown values that the server does not return records for will be removed.
      * 3. Otherwise, unknown values will be removed.
@@ -1281,7 +1297,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         if ((skipLoad !== true) && (unknownValues.length > 0) && (me.queryMode === 'remote')) {
             var params = {};
-            params[me.valueField] = unknownValues.join(me.delimiter);
+            params[me.valueParam || me.valueField] = unknownValues.join(me.delimiter);
             me.store.load({
                 params: params,
                 callback: function() {
