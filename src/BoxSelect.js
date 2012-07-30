@@ -237,6 +237,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         '<div id="{cmpId}-listWrapper" class="x-boxselect {fieldCls} {typeCls}">',
         '<ul id="{cmpId}-itemList" class="x-boxselect-list">',
         '<li id="{cmpId}-inputElCt" class="x-boxselect-input">',
+        '<div id="{cmpId}-emptyEl" class="{emptyCls}">{emptyText}</div>',
         '<input id="{cmpId}-inputEl" type="{type}" ',
         '<tpl if="name">name="{name}" </tpl>',
         '<tpl if="value"> value="{[Ext.util.Format.htmlEncode(values.value)]}"</tpl>',
@@ -256,12 +257,17 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
     /**
      * @private
      */
-    childEls: [ 'listWrapper', 'itemList', 'inputEl', 'inputElCt' ],
+    childEls: [ 'listWrapper', 'itemList', 'inputEl', 'inputElCt', 'emptyEl' ],
 
     /**
      * @private
      */
     componentLayout: 'boxselectfield',
+
+    /**
+     * @private
+     */
+    emptyInputCls: 'x-boxselect-emptyinput',
 
     /**
      * @inheritdoc
@@ -420,12 +426,16 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             data = me.callParent(),
             isEmpty = me.emptyText && data.value.length < 1;
 
+        data.value = '';
         if (isEmpty) {
-            data.value = me.emptyText;
+            data.emptyText = me.emptyText;
+            data.emptyCls = me.emptyCls;
+            data.inputElCls = me.emptyInputCls;
         } else {
-            data.value = '';
+            data.emptyText = '';
+            data.emptyCls = me.emptyInputCls;
+            data.inputElCls = '';
         }
-        data.inputElCls = data.fieldCls.match(me.emptyCls) ? me.emptyCls : '';
 
         return data;
     },
@@ -1090,7 +1100,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             if (me.picker && me.isExpanded) {
                 me.alignPicker();
             }
-            if (me.hasFocus) {
+            if (me.hasFocus && me.inputElCt && me.listWrapper) {
                 me.inputElCt.scrollIntoView(me.listWrapper);
             }
         }, 15);
@@ -1379,7 +1389,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (!this.suspendCheckChange && !this.isDestroyed) {
             var me = this,
             valueStore = me.valueStore,
-            lastValue = me.lastValue,
+            lastValue = me.lastValue || '',
             valueField = me.valueField,
             newValue = Ext.Array.map(Ext.Array.from(me.value), function(val) {
                 if (val.isModel) {
@@ -1446,15 +1456,17 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             isEmpty = Ext.isEmpty(me.value) && !me.hasFocus;
             inputEl = me.inputEl;
             if (isEmpty) {
-                inputEl.dom.value = emptyText;
-                inputEl.addCls(me.emptyCls);
+                inputEl.dom.value = '';
+                me.emptyEl.update(emptyText);
+                me.emptyEl.addCls(me.emptyCls);
+                me.emptyEl.removeCls(me.emptyInputCls);
                 me.listWrapper.addCls(me.emptyCls);
+                me.inputEl.addCls(me.emptyInputCls);
             } else {
-                if (inputEl.dom.value === emptyText) {
-                    inputEl.dom.value = '';
-                }
+                me.emptyEl.addCls(me.emptyInputCls);
+                me.emptyEl.removeCls(me.emptyCls);
                 me.listWrapper.removeCls(me.emptyCls);
-                inputEl.removeCls(me.emptyCls);
+                me.inputEl.removeCls(me.emptyInputCls);
             }
             me.autoSize();
         }
@@ -1467,14 +1479,13 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         var me = this,
         inputEl = me.inputEl,
         emptyText = me.emptyText,
-        isEmpty;
+        isEmpty = (inputEl.dom.value == '');
 
-        if (emptyText && inputEl.dom.value === emptyText) {
-            inputEl.dom.value = '';
-            isEmpty = true;
-            inputEl.removeCls(me.emptyCls);
-            me.listWrapper.removeCls(me.emptyCls);
-        }
+        me.emptyEl.addCls(me.emptyInputCls);
+        me.emptyEl.removeCls(me.emptyCls);
+        me.listWrapper.removeCls(me.emptyCls);
+        me.inputEl.removeCls(me.emptyInputCls);
+
         if (me.selectOnFocus || isEmpty) {
             inputEl.dom.select();
         }

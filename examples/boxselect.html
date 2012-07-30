@@ -22,6 +22,7 @@
 
     <!-- Example -->
     <script type="text/javascript" src="boxselect-data.js"></script>
+    <script type="text/javascript" src="boxselect-advanced.js"></script>
     <script type="text/javascript" src="boxselect.js"></script>
 
     <style type="text/css">
@@ -62,6 +63,7 @@
 			margin-left: 20px;
 		}
         .btn-examplecfg {
+            margin-top: 15px !important;
             margin-bottom: 25px;
         }
 		.config-options li {
@@ -95,7 +97,7 @@ provide a more 'multiSelect'-friendly control. The careful efforts made in this 
 included here showcase the differences between the default control and this extension, provide general information about advanced usage
 of BoxSelect, and are used as test cases when resolving reported issues and developing new functionality.</p>
 
-<h2><a name="toc"></a>Table of Contents</h2>
+<h2><a name="toc" href="#toc"></a>Table of Contents</h2>
 <ul class="toc">
     <li>
         <a href="#basicConfiguration">Basic Configuration</a>:
@@ -129,7 +131,7 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     </li>
 </ul>
 
-<div><hr /><a name="basicConfiguration">&nbsp;</a></div>
+<div><hr /><a name="basicConfiguration" href="#basicConfiguration">&nbsp;</a></div>
 <div class="example">
     <h2>Basic Configuration</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
@@ -165,20 +167,20 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="basicBoxselect"></div>
 </div>
 
-<div><hr /><a name="templates">&nbsp;</a></div>
+<div><hr /><a name="templates" href="#templates">&nbsp;</a></div>
 <div class="example">
 	<h2>Templates</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>Display of the selected values and the dropdowns are both configurable via templates.</p>
 	<ul class="config-options">
-		<li><a href="#">labelTpl</a> controls the display of selected values within the textfield box.</li>
-		<li><a href="#">listConfig</a> part of the standard ComboBox control, controls the display of values
+		<li><a name="cfg-labelTpl" href="#cfg-labelTpl">labelTpl</a> controls the display of selected values within the textfield box.</li>
+		<li><a name="cfg-listConfig" href="#cfg-listConfig">listConfig</a> part of the standard ComboBox control, controls the display of values
             within the dropdown pick list.</li>
 	</ul>
 	<div id="templateConfigs"></div>
 </div>
 
-<div><hr /><a name="singleSelection">&nbsp;</a></div>
+<div><hr /><a name="singleSelection" href="#singleSelection">&nbsp;</a></div>
 <div class="example">
 	<h2>Single Select</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
@@ -188,7 +190,7 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	<div id="singleSelect"></div>
 </div>
 
-<div><hr /><a name="remoteQuerying">&nbsp;</a></div>
+<div><hr /><a name="remoteQuerying" href="#remoteQuerying">&nbsp;</a></div>
 <div class="example">
 	<h2>Unknown Value Handling with Remote Stores</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
@@ -210,7 +212,7 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="autoQuery"></div>
 </div>
 
-<div><hr /><a name="autoSuggestion">&nbsp;</a></div>
+<div><hr /><a name="autoSuggestion" href="#autoSuggestion">&nbsp;</a></div>
 <div class="example">
     <h2>Multiple Emails with Auto-suggest</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
@@ -232,11 +234,11 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 			and any values entered will be parsed in to new/existing records.
 		</li>
 		<li>
-			<a href="#">createNewOnEnter</a> is defaulted to false.  If set to true, a new entry will be created when the user presses Enter.
+			<a name="cfg-createNewOnEnter" href="#cfg-createNewOnEnter">createNewOnEnter</a> is defaulted to false.  If set to true, a new entry will be created when the user presses Enter.
 			This configuration option only applies if forceSelection is false.
 		</li>
 		<li>
-			<a href="#">createNewOnBlur</a> is defaulted to false.  If set to true, a new entry will be created when focus leaves the input
+			<a name="cfg-createNewOnBlur" href="#cfg-createNewOnBlur">createNewOnBlur</a> is defaulted to false.  If set to true, a new entry will be created when focus leaves the input
 			field.  This configuration option only applies if forceSelection is false, and is superceded by
 			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-autoSelect">autoSelect</a> and
 			<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-selectOnTab">selectOnTab</a>.
@@ -245,49 +247,54 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="emailSuggest"></div>
 </div>
 
-<div><hr /><a name="variousOptions">&nbsp;</a></div>
+<div><hr /><a name="variousOptions" href="#variousOptions">&nbsp;</a></div>
 <div class="example">
 	<h2>Other Configuration Options</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following configuration options are specific to the BoxSelect.</p>
 	<ul class="config-options">
-		<li><a href="#">createNewOnEnter</a> - please see the above forceSelection: false example.</li>
-		<li><a href="#">createNewOnBlur</a> - please see the above forceSelection: false example.</li>
-		<li><a href="#">stacked</a> is defaulted to false.  If set to true, the labelled items will fill to the width of the list instead
+		<li><a href="#cfg-createNewOnEnter">createNewOnEnter</a> - please see the above forceSelection: false example.</li>
+		<li><a href="#cfg-createNewOnBlur">createNewOnBlur</a> - please see the above forceSelection: false example.</li>
+		<li><a name="cfg-stacked" href="#cfg-stacked">stacked</a> is defaulted to false.  If set to true, the labelled items will fill to the width of the list instead
 		of being only as wide as the displayed value</li>
-		<li><a href="#">pinList</a> is defaulted to true.  If set to false, the pick list will automatically collapse after a selection is made
+		<li><a name="cfg-pinList" href="#cfg-pinList">pinList</a> is defaulted to true.  If set to false, the pick list will automatically collapse after a selection is made
 			when multiSelect is true. This mimics the default behavior when multiSelect is false.</li>
-        <li><a href="#">triggerOnClick</a> is defaulted to true. If set to true, the pick list will emulate a trigger
+        <li><a name="cfg-triggerOnClick" href="#cfg-triggerOnClick">triggerOnClick</a> is defaulted to true. If set to true, the pick list will emulate a trigger
             click when clicking in the field just like when a ComboBox is editable=false. Please see the above single select
             example for directions on globally overriding this default if desired.</li>
-        <li><a href="#">grow</a> is defaulted to true.  If set to false, the list of selections will scroll when necessary,
+        <li><a name="cfg-grow" href="#cfg-grow">grow</a> is defaulted to true.  If set to false, the list of selections will scroll when necessary,
             and the height of the field will not change.  This setting has no effect if a fixed height is set for
-            the field, either directly (e.g., through a <a href="#">height</a> configuration), or by the containing layout.</li>
-        <li><a href="#">growMin</a> is defaulted to false.  If <a href="#">grow</a> is true, any numeric value will
+            the field, either directly (e.g., through a defined height configuration), or by the containing layout.</li>
+        <li><a name="cfg-growMin" href="#cfg-growMin">growMin</a> is defaulted to false.  If <a href="#cfg-grow">grow</a> is true, any numeric value will
             be used for the field's minimum height.</li>
-        <li><a href="#">growMax</a> is defaulted to false.  If <a href="#">grow</a> is true, any numeric value will
+        <li><a name="cfg-growMax" href="#cfg-growMax">growMax</a> is defaulted to false.  If <a href="#cfg-grow">grow</a> is true, any numeric value will
             be used for the field's maximum height and the list of selections will scroll when necessary.</li>
-        <li><a href="#">filterPickList</a> is defaulted to false. If set to true, currently selected values will
+        <li><a name="cfg-filterPickList" href="#cfg-filterPickList">filterPickList</a> is defaulted to false. If set to true, currently selected values will
             be hidden from the expanded pick list.  This is done via css to maintain simplicity of store
             and filter management and consistency for both local and remote querying.</li>
 	</ul>
 	<div id="otherConfigs"></div>
 </div>
 
-<div><hr /><a name="eventsAndValues">&nbsp;</a></div>
+<div><hr /><a name="eventsAndValues" href="#eventsAndValues">&nbsp;</a></div>
 <div class="example">
 	<h2>Value Setting and Events</h2>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following shows examples of manually managing the values of the field and displays the value-based events. Except where noted,
 	the mixedValue parameters can be specified in any of the forms listed in the Basic Configuration examples above. In general, getRawValue
-	and setRawValue should not be used, as of ExtJS 4 they are formally for the rendered field output only.</p>
+	and setRawValue should not be used, as of ExtJS 4 they are formally for the rendered field output only. These are also shown in an
+    Ext.Window control with a more complicated layout, to show a more typical usage of this component.</p>
 	<ul class="config-options">
-		<li><a href="#">addValue(mixedValue)</a></li>
-		<li><a href="#">removeValue(mixedValue)</a></li>
-		<li><a href="#">getValueRecords()</a></li>
+		<li><a name="fn-addValue" href="#fn-addValue">addValue(mixedValue)</a> - Adds a value(s) to the current selection.
+            See the description of possible values in the <a href="#basicConfiguration">Basic Configuration</a> section.</li>
+		<li><a name="fn-removeValue" href="#fn-removeValue">removeValue(mixedValue)</a> - Removes a value(s) to the current selection.
+            See the description of possible values in the <a href="#basicConfiguration">Basic Configuration</a> section.</li>
+		<li><a name="fn-getValueRecords" href="#fn-getValueRecords">getValueRecords()</a> - Returns all of the current selection as records.</li>
 	</ul>
 	<div id="valueSetting"></div>
 </div>
+
+<div>
 
 </body>
 </html>
