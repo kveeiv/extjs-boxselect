@@ -1306,6 +1306,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                     }
                     me.setValue(value, doSelect, true);
                     me.autoSize();
+                    me.lastQuery = false;
                 }
             });
             return false;
