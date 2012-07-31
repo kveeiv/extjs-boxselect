@@ -1306,13 +1306,8 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         }
 
         if ((skipLoad !== true) && (unknownValues.length > 0) && (me.queryMode === 'remote')) {
-            var params = {},
-            afterCheckChange = 0;
+            var params = {};
             params[me.valueParam || me.valueField] = unknownValues.join(me.delimiter);
-            if (me.suspendCheckChange) {
-                me.suspendCheckChange++;
-                afterCheckChange = -1;
-            }
             me.store.load({
                 params: params,
                 callback: function() {
@@ -1320,7 +1315,6 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                         me.itemList.unmask();
                     }
                     me.setValue(value, doSelect, true);
-                    me.suspendCheckChange += afterCheckChange;
                     me.autoSize();
                     me.lastQuery = false;
                 }
