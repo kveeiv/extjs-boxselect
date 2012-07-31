@@ -1306,8 +1306,13 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         }
 
         if ((skipLoad !== true) && (unknownValues.length > 0) && (me.queryMode === 'remote')) {
-            var params = {};
+            var params = {},
+            afterCheckChange = 0;
             params[me.valueParam || me.valueField] = unknownValues.join(me.delimiter);
+            if (me.suspendCheckChange) {
+                me.suspendCheckChange++;
+                afterCheckChange = -1;
+            }
             me.store.load({
                 params: params,
                 callback: function() {
@@ -1315,6 +1320,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                         me.itemList.unmask();
                     }
                     me.setValue(value, doSelect, true);
+                    me.suspendCheckChange += afterCheckChange;
                     me.autoSize();
                     me.lastQuery = false;
                 }
@@ -1406,14 +1412,14 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (!this.suspendCheckChange && !this.isDestroyed) {
             var me = this,
             valueStore = me.valueStore,
-            lastValue = me.lastValue || '',
+            lastValue = Ext.Array.from(me.lastValue),
             valueField = me.valueField,
             newValue = Ext.Array.map(Ext.Array.from(me.value), function(val) {
                 if (val.isModel) {
                     return val.get(valueField);
                 }
                 return val;
-            }, this).join(this.delimiter),
+            }),
             isEqual = me.isEqual(newValue, lastValue);
 
             if (!isEqual || ((newValue.length > 0 && valueStore.getCount() < newValue.length))) {
@@ -1426,6 +1432,10 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 valueStore.fireEvent('datachanged', valueStore);
 
                 if (!isEqual) {
+                    if (!me.multiSelect) {
+                        lastValue = lastValue[0];
+                        newValue = newValue[0];
+                    }
                     me.lastValue = newValue;
                     me.fireEvent('change', me, newValue, lastValue);
                     me.onChange(newValue, lastValue);
