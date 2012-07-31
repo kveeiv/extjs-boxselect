@@ -32,15 +32,16 @@
         h1 {
             font-size: 2em;
         }
-        h2 {
-            font-size: 1.5em;
-        }
 
         .toc {
+            width: 550px;
+            padding: 20px;
+        }
+        .toc ul {
             margin-bottom: 10px;
         }
         .toc li {
-            list-style: disc inside;
+            list-style: disc;
         }
         .linktotoc {
             position: absolute;
@@ -49,14 +50,20 @@
             font-size: 0.8em;
         }
 
+        .section-header {
+            display: block;
+            margin-bottom: 0.5em;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: black;
+            text-decoration: none;
+        }
+
         .example {
             width: 600px;
             border: 1px solid #CCC;
-            padding: 0 10px 10px 10px;
+            padding: 10px;
             margin: 0 0 10px;
-        }
-        .x-fieldset {
-            margin-top: 20px;
         }
 		ul.config-options, ul.config-options ul {
 			margin-bottom: 20px;
@@ -89,51 +96,52 @@
 </head>
 <body>
 <h1>Ext.ux.form.field.BoxSelect Examples and Reference</h1>
-<p>The examples below contain buttons to show their individual configurations inline. Additionally, the js is not minified so it is readable.
-    See <a href="boxselect.js">boxselect.js</a> to view the code for these examples.</p>
 <p>Ext.ux.form.field.BoxSelect extends <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">Ext.form.field.ComboBox</a> to
 provide a more 'multiSelect'-friendly control. The careful efforts made in this extension enable most (if not all) of the
 <a href="http://docs.sencha.com/ext-js/4-1/#!/example/form/combos.html">ComboBox examples</a> to convert to BoxSelects easily. The examples
 included here showcase the differences between the default control and this extension, provide general information about advanced usage
 of BoxSelect, and are used as test cases when resolving reported issues and developing new functionality.</p>
 
-<h2><a name="toc" href="#toc"></a>Table of Contents</h2>
-<ul class="toc">
-    <li>
-        <a href="#basicConfiguration">Basic Configuration</a>:
-        Basic use of the value-handling related configurations
-    </li>
-    <li>
-        <a href="#templates">Templates</a>:
-        Custom display templates for selected values and pick list items
-    </li>
-    <li>
-        <a href="#singleSelection">Single Value Selection</a>:
-        Specialized behavior for non-multiselect BoxSelect
-    </li>
-    <li>
-        <a href="#remoteQuerying">Remote Querying and Unknown Values</a>:
-        Automated querying of a remote store for unknown values
-    </li>
-    <li>
-        <a href="#autoSuggestion">Multiple email address with auto-suggestion</a>:
-        Example field for multiple email addresses from a store, and new addresses with
-        automatic value record creation when typed or pasted.
-    </li>
-    <li>
-        <a href="#variousOptions">Other varied configuration options</a>:
-        Various customizable behavior for the field input and pick lists.
-    </li>
-    <li>
-        <a href="#eventsAndValues">Programmatic value management and event listeners</a>:
-        Examples of setting and retrieving the value of the BoxSelect programmatically,
-        and logging from value and selection related events.
-    </li>
-</ul>
+<div class="toc">
+    <a name="toc" href="#toc" class="section-header">Table of Contents</a>
+    <p>The examples below contain buttons to show their individual configurations inline. Additionally, the js is not minified so it is readable.
+        See <a href="boxselect.js">boxselect.js</a> to view the code for these examples.</p>
+    <ul>
+        <li>
+            <a href="#basicConfiguration">Basic Configuration</a>:
+            Basic use of the value-handling related configurations
+        </li>
+        <li>
+            <a href="#templates">Templates</a>:
+            Custom display templates for selected values and pick list items
+        </li>
+        <li>
+            <a href="#singleSelection">Single Value Selection</a>:
+            Specialized behavior for non-multiselect BoxSelect
+        </li>
+        <li>
+            <a href="#remoteQuerying">Remote Querying and Unknown Values</a>:
+            Automated querying of a remote store for unknown values
+        </li>
+        <li>
+            <a href="#autoSuggestion">Multiple email address with auto-suggestion</a>:
+            Example field for multiple email addresses from a store, and new addresses with
+            automatic value record creation when typed or pasted.
+        </li>
+        <li>
+            <a href="#variousOptions">Other varied configuration options</a>:
+            Various customizable behavior for the field input and pick lists.
+        </li>
+        <li>
+            <a href="#eventsAndValues">Programmatic value management and event listeners</a>:
+            Examples of setting and retrieving the value of the BoxSelect programmatically,
+            and logging from value and selection related events.
+        </li>
+    </ul>
+</div>
 
-<div><hr /><a name="basicConfiguration" href="#basicConfiguration">&nbsp;</a></div>
 <div class="example">
-    <h2>Basic Configuration</h2>
+    <a name="basicConfiguration" href="#basicConfiguration" class="section-header">Basic Configuration</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>All configuration values for <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox">ComboBox</a> should work, but some defaults are changed:</p>
 	<ul class="config-options">
@@ -167,9 +175,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="basicBoxselect"></div>
 </div>
 
-<div><hr /><a name="templates" href="#templates">&nbsp;</a></div>
 <div class="example">
-	<h2>Templates</h2>
+	<a name="templates" href="#templates" class="section-header">Templates</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>Display of the selected values and the dropdowns are both configurable via templates.</p>
 	<ul class="config-options">
@@ -180,9 +187,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	<div id="templateConfigs"></div>
 </div>
 
-<div><hr /><a name="singleSelection" href="#singleSelection">&nbsp;</a></div>
 <div class="example">
-	<h2>Single Select</h2>
+	<a name="singleSelection" href="#singleSelection" class="section-header">Single Select</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>While the primary use case for BoxSelect is for multiple selection, single selection can also be set with multiSelect: false.
 	If you want this to be the default case for all BoxSelect's, you can do so by adding the following before your BoxSelects are created:</p>
@@ -190,9 +196,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	<div id="singleSelect"></div>
 </div>
 
-<div><hr /><a name="remoteQuerying" href="#remoteQuerying">&nbsp;</a></div>
 <div class="example">
-	<h2>Unknown Value Handling with Remote Stores</h2>
+	<a name="remoteQuerying" href="#remoteQuerying" class="section-header">Unknown Value Handling with Remote Stores</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
     <h3>Please note: the example page hosted on the github pages do not allow execution of php scripts,
     so this example will not work there. This example requires hosting on a server that allows php script execution as it
@@ -200,8 +205,10 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	<p>If <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-queryMode">queryMode</a> is set to 'remote',
 	<a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-forceSelection">forceSelection</a> is set to true,
 	and a value is passed to the BoxSelect that is not in the store, a query will be sent to the store's configured proxy with a
-	parameter with the name of the <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a>,
-	and a value of the unknown values separated by the configured <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a>. For
+	parameter with the name of the <a name="cfg-valueParam" href="#cfg-valueParam">valueParam</a> configuration (or the
+    <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-valueField">valueField</a> if valueParam is not
+    specified), and a value of the unknown values separated by the configured
+    <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.form.field.ComboBox-cfg-delimiter">delimiter</a>. For
 	example if the valueField is 'abbr' and the delimiter is '|' and unknown values 'NC', 'VA' and 'ZZ' are set, the following parameters
 	will be passed to <a href="http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store-method-load">store.load()</a>:</p>
 	<pre>{ abbr: 'NC|VA|ZZ' }</pre>
@@ -212,9 +219,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="autoQuery"></div>
 </div>
 
-<div><hr /><a name="autoSuggestion" href="#autoSuggestion">&nbsp;</a></div>
 <div class="example">
-    <h2>Multiple Emails with Auto-suggest</h2>
+    <a name="autoSuggestion" href="#autoSuggestion" class="section-header">Multiple Emails with Auto-suggest</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
     <p>The combo below illustrates the usage of 'forceSelection: false' with the BoxSelect component to enable the
 	entry of multiple email addresses, with auto-suggestions provided from the attached store. New records are
@@ -247,9 +253,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
     <div id="emailSuggest"></div>
 </div>
 
-<div><hr /><a name="variousOptions" href="#variousOptions">&nbsp;</a></div>
 <div class="example">
-	<h2>Other Configuration Options</h2>
+	<a name="variousOptions" href="#variousOptions" class="section-header">Other Configuration Options</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following configuration options are specific to the BoxSelect.</p>
 	<ul class="config-options">
@@ -276,9 +281,8 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	<div id="otherConfigs"></div>
 </div>
 
-<div><hr /><a name="eventsAndValues" href="#eventsAndValues">&nbsp;</a></div>
 <div class="example">
-	<h2>Value Setting and Events</h2>
+	<a name="eventsAndValues" href="#eventsAndValues" class="section-header">Value Setting and Events</a>
     <a class="linktotoc" href="#toc">Back to table of contents</a>
 	<p>The following shows examples of manually managing the values of the field and displays the value-based events. Except where noted,
 	the mixedValue parameters can be specified in any of the forms listed in the Basic Configuration examples above. In general, getRawValue
@@ -293,8 +297,6 @@ of BoxSelect, and are used as test cases when resolving reported issues and deve
 	</ul>
 	<div id="valueSetting"></div>
 </div>
-
-<div>
 
 </body>
 </html>

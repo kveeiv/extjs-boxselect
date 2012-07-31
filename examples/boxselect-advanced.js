@@ -73,6 +73,7 @@ BoxSelectExample = {
                     title: 'Primary States',
                     items: [{
                         xtype: 'boxselect',
+                        itemId: 'PrimaryStates',
                         name: 'PrimaryStates',
                         fieldLabel: 'Select Multiple States',
                         store: 'States',
@@ -82,7 +83,27 @@ BoxSelectExample = {
                         delimiter: '|',
                         value: 'CA|NY',
                         emptyText: 'At least one state must be specified as primary.',
+                        allowBlank: false,
                         listeners: this.getFieldListeners()
+                    }],
+                    bbar: [{
+                        text: 'Set NJ',
+                        handler: function() {
+                            this.exampleWindow.down('#PrimaryStates').setValue('NJ');
+                        },
+                        scope: this
+                    },{
+                        text: 'Add VA',
+                        handler: function() {
+                            this.exampleWindow.down('#PrimaryStates').addValue('VA');
+                        },
+                        scope: this
+                    },{
+                        text: 'Remove CA',
+                        handler: function() {
+                            this.exampleWindow.down('#PrimaryStates').removeValue('CA');
+                        },
+                        scope: this
                     }]
                 },{
                     title: 'Backup States (Optional)',
