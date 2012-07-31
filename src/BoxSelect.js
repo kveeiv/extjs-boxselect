@@ -1406,14 +1406,14 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         if (!this.suspendCheckChange && !this.isDestroyed) {
             var me = this,
             valueStore = me.valueStore,
-            lastValue = me.lastValue || '',
+            lastValue = Ext.Array.from(me.lastValue),
             valueField = me.valueField,
             newValue = Ext.Array.map(Ext.Array.from(me.value), function(val) {
                 if (val.isModel) {
                     return val.get(valueField);
                 }
                 return val;
-            }, this).join(this.delimiter),
+            }),
             isEqual = me.isEqual(newValue, lastValue);
 
             if (!isEqual || ((newValue.length > 0 && valueStore.getCount() < newValue.length))) {
@@ -1426,6 +1426,10 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 valueStore.fireEvent('datachanged', valueStore);
 
                 if (!isEqual) {
+                    if (!me.multiSelect) {
+                        lastValue = lastValue[0];
+                        newValue = newValue[0];
+                    }
                     me.lastValue = newValue;
                     me.fireEvent('change', me, newValue, lastValue);
                     me.onChange(newValue, lastValue);
