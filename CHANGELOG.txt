@@ -1,5 +1,13 @@
 CURRENT RELEASE
 ---------------
+v2.1 - 26 September 2012
+
+Bug fixes:
+* Removed circular dependency when used by Sencha Cmd v3.0.0
+
+
+Previous Updates
+----------------
 
 v2.0 - 31 May 2012
 Enhancements:
@@ -16,11 +24,6 @@ Bug Fixes:
 Documentation:
 * Added example for filterPickList
 * Changed extjs library references to official 4.1 cdn sources
-
-
-
-Previous Updates
-----------------
 
 v1.3.1 - 29 Oct 2011
 Enhancements:
