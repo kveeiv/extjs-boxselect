@@ -1,13 +1,13 @@
 /*
 
-This file contains example usages of the Ext.ux.form.field.BoxSelect component, and is based on the
+This file contains example usages of the Ext.ux.boxselect.BoxSelect component, and is based on the
 examples of comboboxes provided in Ext JS 4.
 
 */
 Ext.USE_NATIVE_JSON = false;
 
 Ext.require([
-    'Ext.ux.form.field.BoxSelect'
+    'Ext.ux.boxselect.BoxSelect'
     ]);
 
 Ext.onReady(function() {
@@ -55,7 +55,7 @@ Ext.onReady(function() {
 
     var addExampleSelect = function(config, renderTo) {
         var fieldCfg = Ext.applyIf(config, baseExampleConfig);
-        var fieldCmp = Ext.create('Ext.ux.form.field.BoxSelect', Ext.applyIf({
+        var fieldCmp = Ext.create('Ext.ux.boxselect.BoxSelect', Ext.applyIf({
             renderTo: renderTo
         }, fieldCfg));
         createShowConfigButton(fieldCfg, fieldCmp);
