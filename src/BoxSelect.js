@@ -1597,9 +1597,21 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                     me.itemList.unmask();
                 }
                 me.setValue(value, doSelect, true);
+                if (me.doResetOriginalValue) {
+                    me.resetOriginalValue();
+                    me.doResetOriginalValue = false;
+                }
                 me.autoSize();
                 me.lastQuery = false;
             }
         });
+    },
+
+    resetOriginalValue: function () {
+        //this can only be done when all values are known...
+        if (this.store.isLoading()) {
+            this.doResetOriginalValue = true;
+            return;
+        }
+        return this.callParent();
     }
-});
