@@ -794,6 +794,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         stopEvent = false;
 
         if (me.readOnly || me.disabled || !me.editable) {
+            e.stopEvent();
             return;
         }
 
