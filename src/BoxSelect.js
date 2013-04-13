@@ -1067,7 +1067,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
             me.multiSelectItemTpl = [
             '<tpl for=".">',
-            '<li class="x-boxselect-item ',
+            '<li class="x-tab-default x-boxselect-item ',
             '<tpl if="this.isSelected(values.'+ me.valueField + ')">',
             ' selected',
             '</tpl>',
