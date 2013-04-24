@@ -724,7 +724,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
         me = this;
         picker = me.picker,
-        pickerTargetEl =  icker.getTargetEl();
+        pickerTargetEl = picker.getTargetEl();
         if (!pickerTargetEl) {
             //picker already destroyed --- this may happen since alignPicker is called deferred
             return;
