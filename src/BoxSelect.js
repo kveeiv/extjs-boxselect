@@ -720,10 +720,16 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      * Overridden to preserve scroll position of pick list when list is realigned
      */
     alignPicker: function() {
-        var me = this,
-            picker = me.picker,
-            pickerScrollPos = picker.getTargetEl().dom.scrollTop;
+        var me, picker, pickerTargetEl, pickerScrollPos;
 
+        me = this;
+        picker = me.picker,
+        pickerTargetEl =  icker.getTargetEl();
+        if (!pickerTargetEl) {
+            //picker already destroyed --- this may happen since alignPicker is called deferred
+            return;
+        }
+        pickerScrollPos = pickerTargetEl.dom.scrollTop;
         me.callParent(arguments);
 
         if (me.isExpanded) {
@@ -732,7 +738,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
                 picker.setWidth(me.listWrapper.getWidth());
             }
 
-            picker.getTargetEl().dom.scrollTop = pickerScrollPos;
+            pickerTargetEl.dom.scrollTop = pickerScrollPos;
         }
     },
 
