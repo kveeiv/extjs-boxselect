@@ -6,6 +6,7 @@
 }
 .x-boxselect ul.x-boxselect-list {
     padding: 1px 3px;
+    margin: 0px;
 }
 ul.x-boxselect-list.x-boxselect-singleselect {
     white-space: nowrap;
@@ -19,7 +20,7 @@ ul.x-boxselect-list.x-boxselect-singleselect {
 }
 .x-boxselect-input input, .x-boxselect-input div {
 	border: none;
-	background: none;
+	background-color: inherit;
 	line-height: 18px !important;
 	height: 20px;
 	width: 100%;

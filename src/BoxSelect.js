@@ -554,30 +554,21 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 	 * Used to determine if a record is filtered out of the current store's data set,
      * for determining if a currently selected value should be retained.
      *
-     * Slightly complicated logic. A record is considered filtered and should be retained if:
+     * A record is considered filtered and should be retained if:
      *
-     * - It is not in the combo store and the store has no filter or it is in the filtered data set
+     * - It is not in the combo store and it is in the value store
      *   (Happens when our selected value is just part of a different load, page or query)
-     * - It is not in the combo store and forceSelection is false and it is in the value store
      *   (Happens when our selected value was created manually)
      *
 	 * @private
 	 */
     isFilteredRecord: function(record) {
         var me = this,
-        store = me.store,
         valueField = me.valueField,
-        storeRecord,
-        filtered = false;
+        value = record.get(valueField);
 
-        storeRecord = store.findExact(valueField, record.get(valueField));
-
-        filtered = ((storeRecord === -1) && (!store.snapshot || (me.findRecord(valueField, record.get(valueField)) !== false)));
-
-        filtered = filtered || (!filtered && (storeRecord === -1) && (me.forceSelection !== true) &&
-            (me.valueStore.findExact(valueField, record.get(valueField)) >= 0));
-
-        return filtered;
+        return (me.store.findExact(valueField, value) === -1) &&
+            (me.valueStore.findExact(valueField, value) !== -1);
     },
 
     /**
@@ -1067,7 +1058,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
 
             me.multiSelectItemTpl = [
             '<tpl for=".">',
-            '<li class="x-boxselect-item ',
+            '<li class="x-tab-default x-boxselect-item ',
             '<tpl if="this.isSelected(values.'+ me.valueField + ')">',
             ' selected',
             '</tpl>',
