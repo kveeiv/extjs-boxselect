@@ -991,9 +991,9 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         record, newValue, len, selStart;
 
         if (me.filterPickList) {
-            var fn = this.createFilterFn(displayField, inputElDom.value);
+            var fn = me.store.createFilterFn(displayField, inputElDom.value);
             record = me.store.findBy(function(rec) {
-                return ((valueStore.indexOfId(rec.getId()) === -1) && fn(rec));
+                return ((valueStore.indexOfId(rec.getId()) === -1) && (!fn ||fn(rec)));
             });
             record = (record === -1) ? false : me.store.getAt(record);
         } else {
