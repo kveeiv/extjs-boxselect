@@ -1073,7 +1073,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
             '</tpl>',
             '" qtip="{[typeof values === "string" ? values : values.' + me.displayField + ']}">' ,
             '<div class="x-boxselect-item-text">{[typeof values === "string" ? values : this.getItemLabel(values)]}</div>',
-            '<div class="x-tab-close-btn x-boxselect-item-close"></div>' ,
+            '<span class="x-tab-close-btn x-boxselect-item-close"></span>' ,
             '</li>' ,
             '</tpl>',
             {
