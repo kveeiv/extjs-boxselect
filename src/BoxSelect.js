@@ -115,6 +115,7 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
      *
      * - `true` for the field value to submit as a json encoded array in a single GET/POST variable
      * - `false` for the field to submit as an array of GET/POST variables
+     * - 'csv' returns the values as a string separated by this.delimiter (which defaults to ', ')
      */
     encodeSubmitValue: false,
 
@@ -1354,8 +1355,12 @@ Ext.define('Ext.ux.form.field.BoxSelect', {
         var me = this,
         val = me.callParent(arguments);
 
-        if (me.multiSelect && me.encodeSubmitValue && val && val[me.name]) {
-            val[me.name] = Ext.encode(val[me.name]);
+        if (me.multiSelect) {
+            if ((me.encodeSubmitValue==='csv') && val && val[me.name]) {
+                val[me.name] = val[me.name].join(this.delimiter);
+            } else if (me.encodeSubmitValue && val && val[me.name]) {
+                val[me.name] = Ext.encode(val[me.name]);
+            }
         }
 
         return val;
