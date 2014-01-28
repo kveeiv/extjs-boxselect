@@ -1,7 +1,7 @@
 {
     "name": "extjs-boxselect",
     "type": "code",
-    "creator": "Chris Alfano <chris@jarv.us>",
+    "creator": "Jarvus Innovations",
     "summary": "kveeiv's boxselect component converted to a Cmd package",
     "detailedDescription": "A field similar to combobox supporting multiple selection.",
     "version": "1.0.0",
