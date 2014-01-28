@@ -1,4 +1,3 @@
-
 # Ext.ux.form.field.BoxSelect
 
 This repository is for the ExtJS4 user extension featured on this post:
@@ -10,7 +9,7 @@ Hosted on github at https://github.com/kveeiv/extjs-boxselect
 
 
 ## Cmd package fork
-This fork of extjs-boxselect has been reorganized to function as a Sencha CMD package and is hosted at https://github.com/themightychris/extjs-boxselect
+This fork of extjs-boxselect has been reorganized by chris@jarv.us to function as a Sencha CMD package and is hosted at https://github.com/JarvusInnovations/extjs-boxselect
 
 ### Package usage
 1.  Clone extjs-boxselect repository into `${workspace.dir}/packages`
