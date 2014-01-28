@@ -15,3 +15,6 @@ This fork of extjs-boxselect has been reorganized by chris@jarv.us to function a
 1.  Clone extjs-boxselect repository into `${workspace.dir}/packages`
 2.  Add `"extjs-boxselect"` to the `"requires"` array in `${app.dir}/app.json`
 3.  Add `"Ext.ux.form.field.BoxSelect"` to `requires` array at the top of any `Ext.define({...});` blocks you wish to use the `boxselect` xtype within
+
+### Known issues
+The examples are broken because the source SASS files for boxselect can no longer be included into a page without being processed by Sencha Cmd first. A proper example will need to be created that is structured as a complete ExtJS app that requires the extjs-boxselect package, but it may be kind of messy to have that contained within the package and it still won't built without a copy of the framework.
