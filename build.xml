@@ -27,11 +27,24 @@
 
             <target name="-before-init"/>
             <target name="-after-init"/>
-        
+
         The "build" target performs the call to Sencha Cmd to build the application.
 
             <target name="-before-build"/>
             <target name="-after-build"/>
     -->
 
+
+    <target name="docs">
+        <exec executable="jsduck" failifexecutionfails="false">
+            <arg line="./src ./sass"/>
+            <arg line="--examples examples.json"/>
+            <arg line="--examples-base-url ../examples/"/>
+            <arg line="--output docs"/>
+        </exec>
+    </target>
+
+    <target name="-before-pkg">
+        <antcall target="docs"/>
+    </target>
 </project>
