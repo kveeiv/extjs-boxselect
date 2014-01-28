@@ -1,0 +1,91 @@
+/* including package extjs-boxselect */
+/* including package extjs-boxselect */
+/* line 2, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect.x-form-text {
+  height: auto;
+  cursor: text;
+  padding: 0;
+  overflow-y: auto;
+}
+/* line 8, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect ul.x-boxselect-list {
+  padding: 1px 3px;
+  margin: 0px;
+}
+
+/* line 13, ../../sass/src/form/field/BoxSelect.scss */
+ul.x-boxselect-list.x-boxselect-singleselect {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* line 17, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-input, .x-boxselect-item {
+  display: inline-block;
+  position: relative;
+  *display: inline;
+  /* IE7 */
+  zoom: 1;
+  /* IE */
+}
+
+/* line 23, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-input input, .x-boxselect-input div {
+  border: none;
+  background-color: inherit;
+  line-height: 18px !important;
+  height: 20px;
+  width: 100%;
+}
+
+/* line 30, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-emptyinput {
+  display: none;
+}
+
+/* line 33, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-stacked .x-boxselect-item {
+  display: block;
+}
+
+/* line 36, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-item {
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border-radius: 6px;
+  o-border-radius: 6px;
+  khtml-border-radius: 6px;
+  border: 1px solid #CAD8F3;
+  padding: 0px 1px 0px 5px !important;
+  margin: 1px 1px 1px 0;
+  background-color: #DEE7F8;
+  cursor: default;
+}
+
+/* line 43, ../../sass/src/form/field/BoxSelect.scss */
+.x-field:not(.x-item-disabled) .x-boxselect-item:hover {
+  background: #BBCEF1;
+  border: 1px solid #6D95E0;
+}
+
+/* line 47, ../../sass/src/form/field/BoxSelect.scss */
+.x-field:not(.x-item-disabled) .x-boxselect-item.selected {
+  border: 1px solid #316AD3 !important;
+  background: #658FDC !important;
+}
+
+/* line 51, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-item-text {
+  line-height: 16px;
+  padding-right: 20px !important;
+}
+
+/* line 55, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-item-close {
+  cursor: pointer;
+}
+
+/* line 58, ../../sass/src/form/field/BoxSelect.scss */
+.x-boxselect-hideselections .x-boundlist-selected {
+  display: none;
+}
