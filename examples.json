@@ -1,0 +1,15 @@
+[
+    {
+        "title": "BoxSelect Examples",
+        "items": [
+            {
+                "name": "simple-page",
+                "title": "Simple page",
+                "description": "A standalone page showing several different configurations of BoxSelect embedded",
+                "url": "simple-page/boxselect.html",
+                "icon": "http://placekitten.com/58/58",
+                "status": "new"
+            }
+        ]
+    }
+]
